@@ -28,6 +28,8 @@ export enum AIModels {
 	CLAUDE_3_7_SONNET_20250219 = 'anthropic/claude-3-7-sonnet-20250219',
 	CLAUDE_4_OPUS = 'anthropic/claude-opus-4-20250514',
 	CLAUDE_4_SONNET = 'anthropic/claude-sonnet-4-20250514',
+	CLAUDE_SONNET_4_5_20250929 = 'anthropic/claude-sonnet-4-5-20250929',
+	CLAUDE_HAIKU_4_5 = 'anthropic/claude-haiku-4-5',
 
 	OPENAI_O3 = 'openai/o3',
 	OPENAI_O4_MINI = 'openai/o4-mini',
@@ -35,7 +37,13 @@ export enum AIModels {
 	OPENAI_4_1 = 'openai/gpt-4.1-2025-04-14',
     OPENAI_5 = 'openai/gpt-5',
     OPENAI_5_MINI = 'openai/gpt-5-mini',
+    OPENAI_5_CODEX = 'openai/gpt-5-codex',
     OPENAI_OSS = 'openai/gpt-oss-120b',
+
+    // Grok models
+    GROK_4_FAST = 'grok/grok-4-fast',
+    GROK_4_FAST_REASONING = 'grok/grok-4-fast-reasoning',
+    GROK_CODE_FAST = 'grok/grok-code-fast',
 
     // OPENROUTER_QWEN_3_CODER = '[openrouter]qwen/qwen3-coder',
     // OPENROUTER_KIMI_2_5 = '[openrouter]moonshotai/kimi-k2',

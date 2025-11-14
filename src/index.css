@@ -51,6 +51,94 @@
   .animate-debug-pulse { animation: none; }
 }
 
+/* Iridescent subtle shimmer effect */
+@keyframes iridescent-shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.iridescent-border {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--iridescent-1),
+    var(--iridescent-2),
+    var(--iridescent-3),
+    var(--iridescent-4)
+  );
+  background-size: 200% 200%;
+  animation: iridescent-shimmer 8s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iridescent-border { animation: none; }
+}
+
+/* Glass morphism utilities */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.glass-card-heavy {
+  background: var(--glass-bg-heavy);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.glass-button {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s ease;
+}
+
+.glass-button:hover {
+  background: var(--glass-bg-heavy);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Neumorphic effects */
+.neomorph {
+  background: #f5f5f7;
+  box-shadow:
+    var(--neomorph-shadow-light),
+    var(--neomorph-shadow-dark);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.neomorph-inset {
+  background: #f5f5f7;
+  box-shadow:
+    var(--neomorph-inset-light),
+    var(--neomorph-inset-dark);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.neomorph:hover {
+  box-shadow:
+    -6px -6px 16px rgba(255, 255, 255, 0.95),
+    6px 6px 16px rgba(174, 174, 192, 0.4);
+}
+
 /* Custom scrollbar for debug bubble */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -144,21 +232,42 @@
 	--ring:
 		oklch(0.708 0 0);
 	--build-accent-color: #ff3d00;
-	--build-chat-colors-bg-1: #e7e7e7;
-	--build-chat-colors-bg-2: #f6f6f6;
-	--build-chat-colors-bg-3: #fbfbfc;
-	--build-chat-colors-bg-4: #ffffff;
-	--build-chat-colors-border-primary: #e5e5e5;
-	--build-chat-colors-border-secondary: #eeeeee;
-	--build-chat-colors-border-tertiary: #eeeeee;
+
+	/* Glass/Liquid Glass UI - Light Mode Only */
+	--build-chat-colors-bg-1: #f5f5f7;
+	--build-chat-colors-bg-2: #fafafa;
+	--build-chat-colors-bg-3: #ffffff;
+	--build-chat-colors-bg-4: rgba(255, 255, 255, 0.85);
+	--build-chat-colors-border-primary: rgba(0, 0, 0, 0.08);
+	--build-chat-colors-border-secondary: rgba(0, 0, 0, 0.05);
+	--build-chat-colors-border-tertiary: rgba(0, 0, 0, 0.03);
 	--build-chat-colors-danger: #950000cc;
 	--build-chat-colors-brand-heavy: #f6821f;
 	--build-chat-colors-brand-primary: #f6821f;
 	--build-chat-colors-brand-subtle: #f6821f;
 	--build-chat-colors-text-inverted: #ffffff;
-	--build-chat-colors-text-primary: #0a0a0a;
-	--build-chat-colors-text-secondary: #171717;
-	--build-chat-colors-text-tertiary: #21212199;
+	--build-chat-colors-text-primary: #1d1d1f;
+	--build-chat-colors-text-secondary: #424245;
+	--build-chat-colors-text-tertiary: #86868b;
+
+	/* Glass morphism variables */
+	--glass-bg: rgba(255, 255, 255, 0.72);
+	--glass-bg-heavy: rgba(255, 255, 255, 0.85);
+	--glass-border: rgba(255, 255, 255, 0.18);
+	--glass-blur: 24px;
+	--glass-blur-light: 12px;
+
+	/* Neumorphism shadows */
+	--neomorph-shadow-light: -4px -4px 12px rgba(255, 255, 255, 0.9);
+	--neomorph-shadow-dark: 4px 4px 12px rgba(174, 174, 192, 0.3);
+	--neomorph-inset-light: inset -2px -2px 8px rgba(255, 255, 255, 0.9);
+	--neomorph-inset-dark: inset 2px 2px 8px rgba(174, 174, 192, 0.25);
+
+	/* Iridescent gradient colors */
+	--iridescent-1: rgba(138, 180, 248, 0.15);
+	--iridescent-2: rgba(188, 140, 245, 0.12);
+	--iridescent-3: rgba(245, 158, 184, 0.15);
+	--iridescent-4: rgba(255, 204, 112, 0.12);
 }
 
 .dark {

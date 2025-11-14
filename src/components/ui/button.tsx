@@ -20,6 +20,10 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-text-secondary dark:hover:bg-accent/50 text-text-primary",
         link: "text-text-primary underline-offset-4 hover:underline",
+        glass:
+          "glass-button text-text-primary hover:shadow-lg relative overflow-hidden",
+        neomorph:
+          "neomorph text-text-primary hover:shadow-lg",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
