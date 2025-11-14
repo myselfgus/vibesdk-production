@@ -43,6 +43,14 @@ export enum AIModels {
     // Cerebras models
     CEREBRAS_GPT_OSS = 'cerebras/gpt-oss-120b',
     CEREBRAS_QWEN_3_CODER = 'cerebras/qwen-3-coder-480b',
+
+    // Cloudflare AI Gateway models (via custom gateway with multiple providers)
+    CLOUDFLARE_GATEWAY_CLAUDE_SONNET_4_5 = 'cloudflare-gateway/anthropic/claude-sonnet-4-5-20250929',
+    CLOUDFLARE_GATEWAY_CLAUDE_HAIKU_4_5 = 'cloudflare-gateway/anthropic/claude-haiku-4-5-20250929',
+    CLOUDFLARE_GATEWAY_GPT_5 = 'cloudflare-gateway/openai/gpt-5',
+    CLOUDFLARE_GATEWAY_GPT_5_CODEX = 'cloudflare-gateway/openai/gpt-5-codex',
+    CLOUDFLARE_GATEWAY_GROK_4_FAST = 'cloudflare-gateway/grok/grok-4-fast-reasoning',
+    CLOUDFLARE_GATEWAY_GROK_CODE_FAST = 'cloudflare-gateway/grok/grok-code-fast',
 }
 
 export interface ModelConfig {
