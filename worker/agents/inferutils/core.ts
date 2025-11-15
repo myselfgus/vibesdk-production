@@ -253,8 +253,8 @@ async function getApiKey(provider: string, env: Env, _userId: string): Promise<s
 }
 
 export async function getConfigurationForModel(
-    model: AIModels | string, 
-    env: Env, 
+    model: AIModels | string,
+    env: Env,
     userId: string,
 ): Promise<{
     baseURL: string,
@@ -262,6 +262,52 @@ export async function getConfigurationForModel(
     defaultHeaders?: Record<string, string>,
 }> {
     let providerForcedOverride: AIGatewayProviders | undefined;
+
+    // Check for cloudflare-gateway prefix (custom gateway configuration)
+    if (model.startsWith('cloudflare-gateway/')) {
+        // Extract provider and model from format: cloudflare-gateway/provider/model
+        const parts = model.split('/');
+        if (parts.length >= 3) {
+            const provider = parts[1]; // e.g., 'anthropic', 'openai', 'grok'
+            // Note: modelName extracted here but not currently used in this path
+            // const modelName = parts.slice(2).join('/'); // e.g., 'claude-sonnet-4-5-20250929'
+
+            // Get the base URL for Cloudflare AI Gateway
+            // Use CLOUDFLARE_AI_GATEWAY_URL if set, otherwise construct from environment
+            let baseURL = env.CLOUDFLARE_AI_GATEWAY_URL;
+            if (!baseURL || baseURL === 'none' || baseURL.trim() === '') {
+                // Default construction if not provided
+                baseURL = 'https://gateway.ai.cloudflare.com/v1/1a481f7cdb7027c30174a692c89cbda1/voither/compat';
+            }
+
+            // Get API key based on provider
+            let apiKey: string;
+            if (provider === 'anthropic' || provider.includes('claude')) {
+                apiKey = env.ANTHROPIC_API_KEY;
+            } else if (provider === 'openai' || provider.includes('gpt')) {
+                apiKey = env.OPENAI_API_KEY;
+            } else if (provider === 'grok' || provider === 'xai') {
+                // XAI/Grok uses XAI_API_KEY
+                apiKey = await getApiKey('xai', env, userId);
+            } else {
+                // Fallback to provider-specific key
+                apiKey = await getApiKey(provider, env, userId);
+            }
+
+            // Add Cloudflare AI Gateway authorization header
+            const defaultHeaders: Record<string, string> = {};
+            if (env.CLOUDFLARE_AI_GATEWAY_TOKEN && env.CLOUDFLARE_AI_GATEWAY_TOKEN.trim() !== '') {
+                defaultHeaders['cf-aig-authorization'] = `Bearer ${env.CLOUDFLARE_AI_GATEWAY_TOKEN}`;
+            }
+
+            return {
+                baseURL,
+                apiKey,
+                defaultHeaders: Object.keys(defaultHeaders).length > 0 ? defaultHeaders : undefined,
+            };
+        }
+    }
+
     // Check if provider forceful-override is set
     const match = model.match(/\[(.*?)\]/);
     if (match) {

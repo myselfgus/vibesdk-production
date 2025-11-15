@@ -51,7 +51,7 @@
     "dispatch_namespaces": [
         {
             "binding": "DISPATCHER",
-            "namespace": "vibesdk-default-namespace",
+            "namespace": "meta-mcp",
             "remote": true
         }
     ],

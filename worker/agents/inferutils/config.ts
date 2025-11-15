@@ -46,7 +46,7 @@ Use these configs instead for better performance, less bugs and costs:
         fallbackModel: AIModels.CLAUDE_4_SONNET,
     },
 
-For real time code fixer, here are some alternatives: 
+For real time code fixer, here are some alternatives:
     realtimeCodeFixer: {
         name: AIModels.CEREBRAS_QWEN_3_CODER,
         reasoning_effort: undefined,
@@ -63,6 +63,29 @@ OR
         max_tokens: 32000,
         temperature: 0.7,
         fallbackModel: AIModels.OPENAI_OSS,
+    },
+
+Using Cloudflare AI Gateway with custom providers:
+    blueprint: {
+        name: AIModels.CLOUDFLARE_GATEWAY_CLAUDE_SONNET_4_5,
+        reasoning_effort: 'high',
+        max_tokens: 32000,
+        temperature: 0.7,
+        fallbackModel: AIModels.GEMINI_2_5_PRO,
+    },
+    phaseImplementation: {
+        name: AIModels.CLOUDFLARE_GATEWAY_GPT_5,
+        reasoning_effort: 'medium',
+        max_tokens: 64000,
+        temperature: 0.2,
+        fallbackModel: AIModels.GEMINI_2_5_PRO,
+    },
+    realtimeCodeFixer: {
+        name: AIModels.CLOUDFLARE_GATEWAY_GROK_CODE_FAST,
+        reasoning_effort: 'low',
+        max_tokens: 32000,
+        temperature: 0.1,
+        fallbackModel: AIModels.GEMINI_2_5_FLASH,
     },
 */
 
