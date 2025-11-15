@@ -42,12 +42,13 @@ import { generateBlueprint } from '../planning/blueprint';
 import { AppService } from '../../database';
 import { RateLimitExceededError } from 'shared/types/errors';
 import { ImageAttachment, type ProcessedImageAttachment } from '../../types/image-attachment';
+import { FileAttachment } from '../../types/file-attachment';
 import { OperationOptions } from '../operations/common';
 import { CodingAgentInterface } from '../services/implementations/CodingAgent';
 import { ImageType, uploadImage } from 'worker/utils/images';
 import { ConversationMessage, ConversationState } from '../inferutils/common';
 import { DeepCodeDebugger } from '../assistants/codeDebugger';
-import { DeepDebugResult } from './types';
+import { DeepDebugResult, ProcessedFileAttachment } from './types';
 import { StateMigration } from './stateMigration';
 import { generateNanoId } from 'worker/utils/idGenerator';
 import { updatePackageJson } from '../utils/packageSyncer';
@@ -2413,16 +2414,82 @@ export class SimpleCodeGeneratorAgent extends Agent<Env, CodeGenState> {
     }
 
     /**
+     * Process file attachments by decoding base64 content
+     * Handles both text files (code/documents) and images
+     */
+    private async processFileAttachments(attachments?: FileAttachment[]): Promise<ProcessedFileAttachment[]> {
+        if (!attachments || attachments.length === 0) {
+            return [];
+        }
+
+        const processed: ProcessedFileAttachment[] = [];
+
+        for (const attachment of attachments) {
+            if (attachment.type === 'image') {
+                processed.push({
+                    type: 'image',
+                    filename: attachment.filename,
+                    mimeType: attachment.mimeType,
+                    base64Data: attachment.base64Data,
+                    size: attachment.size,
+                    relativePath: attachment.relativePath,
+                });
+            } else if (attachment.type === 'code' || attachment.type === 'document') {
+                try {
+                    const content = Buffer.from(attachment.base64Data, 'base64').toString('utf-8');
+                    processed.push({
+                        type: 'text',
+                        filename: attachment.filename,
+                        mimeType: attachment.mimeType,
+                        content: content,
+                        size: attachment.size,
+                        relativePath: attachment.relativePath,
+                    });
+                } catch (error) {
+                    this.logger().error(`Failed to decode file ${attachment.filename}:`, error);
+                }
+            }
+        }
+
+        return processed;
+    }
+
+    /**
+     * Build enriched message with file attachments context
+     * Text files are appended to the message with clear delimiters
+     */
+    private buildMessageWithAttachments(message: string, attachments: ProcessedFileAttachment[]): string {
+        if (attachments.length === 0) {
+            return message;
+        }
+
+        let enrichedMessage = message;
+
+        const textFiles = attachments.filter(a => a.type === 'text');
+        if (textFiles.length > 0) {
+            const filesContext = textFiles.map(f => {
+                const pathInfo = f.relativePath ? ` (from: ${f.relativePath})` : '';
+                return `\n\n---FILE: ${f.filename}${pathInfo}---\n${f.content}\n---END FILE---`;
+            }).join('');
+            enrichedMessage += filesContext;
+        }
+
+        return enrichedMessage;
+    }
+
+    /**
      * Handle user input during conversational code generation
      * Processes user messages and updates pendingUserInputs state
      */
-    async handleUserInput(userMessage: string, images?: ImageAttachment[]): Promise<void> {
+    async handleUserInput(userMessage: string, images?: ImageAttachment[], files?: FileAttachment[]): Promise<void> {
         try {
-            this.logger().info('Processing user input message', { 
+            this.logger().info('Processing user input message', {
                 messageLength: userMessage.length,
                 pendingInputsCount: this.state.pendingUserInputs.length,
                 hasImages: !!images && images.length > 0,
-                imageCount: images?.length || 0
+                imageCount: images?.length || 0,
+                hasFiles: !!files && files.length > 0,
+                fileCount: files?.length || 0
             });
 
             // Ensure template details are loaded before processing
@@ -2443,10 +2510,40 @@ export class SimpleCodeGeneratorAgent extends Agent<Env, CodeGenState> {
                 this.logger().info('Uploaded images', { uploadedImages });
             }
 
+            // Process file attachments (text files and other documents)
+            const processedFiles = await this.processFileAttachments(files);
+            this.logger().info('Processed file attachments', {
+                fileCount: processedFiles.length,
+                textFiles: processedFiles.filter(f => f.type === 'text').length,
+                imageFiles: processedFiles.filter(f => f.type === 'image').length
+            });
+
+            // Extract images from processed files and upload them
+            const fileImages = processedFiles
+                .filter(f => f.type === 'image')
+                .map(f => ({
+                    id: f.filename,
+                    filename: f.filename,
+                    mimeType: f.mimeType as any,
+                    base64Data: f.base64Data || '',
+                    size: f.size
+                } as ImageAttachment));
+
+            if (fileImages.length > 0) {
+                const uploadedFileImages = await Promise.all(fileImages.map(async (image) => {
+                    return await uploadImage(this.env, image, ImageType.UPLOADS);
+                }));
+                uploadedImages.push(...uploadedFileImages);
+                this.logger().info('Uploaded images from file attachments', { count: uploadedFileImages.length });
+            }
+
+            // Enrich message with text file contents
+            const enrichedMessage = this.buildMessageWithAttachments(userMessage, processedFiles);
+
             // Process the user message using conversational assistant
             const conversationalResponse = await this.operations.processUserMessage.execute(
-                { 
-                    userMessage, 
+                {
+                    userMessage: enrichedMessage, 
                     conversationState: this.getConversationState(),
                     conversationResponseCallback: (
                         message: string,

@@ -1873,7 +1873,7 @@ class CloudflareDeploymentManager {
 			// Look for the pattern and replace it with commented version
 			const commentedContent = content.replace(
 				/(\s*)"dispatch_namespaces": \[[\s\S]*?\]/,
-				'$1// "dispatch_namespaces": [\n$1//     {\n$1//         "binding": "DISPATCHER",\n$1//         "namespace": "orange-build-default-namespace",\n$1//         "experimental_remote": true\n$1//     }\n$1// ]'
+				'$1// "dispatch_namespaces": [\n$1//     {\n$1//         "binding": "META_MCP",\n$1//         "namespace": "orange-build-default-namespace",\n$1//         "experimental_remote": true\n$1//     }\n$1// ]'
 			);
 
 			if (commentedContent !== content) {

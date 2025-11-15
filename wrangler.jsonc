@@ -50,7 +50,7 @@
 	},
     "dispatch_namespaces": [
         {
-            "binding": "DISPATCHER",
+            "binding": "META_MCP",
             "namespace": "meta-mcp",
             "remote": true
         }

@@ -85,7 +85,7 @@ async function handleUserAppRequest(request: Request, env: Env): Promise<Respons
 
 	// Extract the app name (e.g., "xyz" from "xyz.build.cloudflare.dev").
 	const appName = hostname.split('.')[0];
-	const dispatcher = env['DISPATCHER'];
+	const dispatcher = env['META_MCP'];
 
 	try {
 		const worker = dispatcher.get(appName);

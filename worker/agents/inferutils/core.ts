@@ -16,7 +16,8 @@ import {
 import { Message, MessageContent, MessageRole } from './common';
 import { ToolCallResult, ToolDefinition } from '../tools/types';
 import { AgentActionKey, AIModels, InferenceMetadata } from './config.types';
-// import { SecretsService } from '../../database';
+import { SecretsService } from '../../database/services/SecretsService';
+import { getBYOKTemplates } from '../../types/secretsTemplates';
 import { RateLimitService } from '../../services/rate-limit/rateLimits';
 import { getUserConfigurableSettings } from '../../config';
 import { SecurityError, RateLimitExceededError } from 'shared/types/errors';
@@ -224,32 +225,55 @@ function isValidApiKey(apiKey: string): boolean {
     return true;
 }
 
-async function getApiKey(provider: string, env: Env, _userId: string): Promise<string> {
-    console.log("Getting API key for provider: ", provider);
-    // try {
-    //     const secretsService = new SecretsService(env);
-    //     const userProviderKeys = await secretsService.getUserBYOKKeysMap(userId);
-    //     // First check if user has a custom API key for this provider
-    //     if (userProviderKeys && provider in userProviderKeys) {
-    //         const userKey = userProviderKeys.get(provider);
-    //         if (userKey && isValidApiKey(userKey)) {
-    //             console.log("Found user API key for provider: ", provider, userKey);
-    //             return userKey;
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.error("Error getting API key for provider: ", provider, error);
-    // }
-    // Fallback to environment variables
+async function getApiKey(provider: string, env: Env, userId: string): Promise<string> {
+    console.log("Getting API key for provider:", provider, "userId:", userId);
+
+    // 1. Try BYOK key from user first
+    if (userId) {
+        try {
+            const secretsService = new SecretsService(env);
+            const byokTemplates = getBYOKTemplates();
+            const template = byokTemplates.find(t => t.provider === provider);
+
+            if (template) {
+                // Get all user secrets and find the matching one
+                const userSecrets = await secretsService.getUserSecrets(userId);
+                const userSecret = userSecrets.find(
+                    s => s.secretType === template.envVarName && s.isActive
+                );
+
+                if (userSecret) {
+                    // Decrypt the secret value
+                    const decryptedKey = await secretsService.getSecretValue(userId, userSecret.id);
+
+                    if (decryptedKey && isValidApiKey(decryptedKey)) {
+                        console.log(`Using BYOK key for ${provider} (user: ${userId})`);
+                        return decryptedKey;
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn(`Failed to get BYOK key for ${provider}:`, error);
+        }
+    }
+
+    // 2. Fallback to system environment variable
     const providerKeyString = provider.toUpperCase().replaceAll('-', '_');
     const envKey = `${providerKeyString}_API_KEY` as keyof Env;
-    let apiKey: string = env[envKey] as string;
-    
-    // Check if apiKey is empty or undefined and is valid
-    if (!isValidApiKey(apiKey)) {
-        apiKey = env.CLOUDFLARE_AI_GATEWAY_TOKEN;
+    const systemKey = env[envKey] as string;
+
+    if (!isValidApiKey(systemKey)) {
+        // Final fallback to Cloudflare AI Gateway token
+        const gatewayToken = env.CLOUDFLARE_AI_GATEWAY_TOKEN;
+        if (!isValidApiKey(gatewayToken)) {
+            throw new Error(`No API key available for provider ${provider}`);
+        }
+        console.log(`Using Cloudflare AI Gateway token for ${provider}`);
+        return gatewayToken;
     }
-    return apiKey;
+
+    console.log(`Using system key for ${provider}`);
+    return systemKey;
 }
 
 export async function getConfigurationForModel(
@@ -280,17 +304,15 @@ export async function getConfigurationForModel(
                 baseURL = 'https://gateway.ai.cloudflare.com/v1/1a481f7cdb7027c30174a692c89cbda1/voither/compat';
             }
 
-            // Get API key based on provider
+            // Get API key based on provider (with BYOK support)
             let apiKey: string;
             if (provider === 'anthropic' || provider.includes('claude')) {
-                apiKey = env.ANTHROPIC_API_KEY;
+                apiKey = await getApiKey('anthropic', env, userId);
             } else if (provider === 'openai' || provider.includes('gpt')) {
-                apiKey = env.OPENAI_API_KEY;
+                apiKey = await getApiKey('openai', env, userId);
             } else if (provider === 'grok' || provider === 'xai') {
-                // XAI/Grok uses XAI_API_KEY
                 apiKey = await getApiKey('xai', env, userId);
             } else {
-                // Fallback to provider-specific key
                 apiKey = await getApiKey(provider, env, userId);
             }
 
@@ -315,17 +337,17 @@ export async function getConfigurationForModel(
         if (provider === 'openrouter') {
             return {
                 baseURL: 'https://openrouter.ai/api/v1',
-                apiKey: env.OPENROUTER_API_KEY,
+                apiKey: await getApiKey('openrouter', env, userId),
             };
         } else if (provider === 'gemini') {
             return {
                 baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
-                apiKey: env.GOOGLE_AI_STUDIO_API_KEY,
+                apiKey: await getApiKey('google-ai-studio', env, userId),
             };
         } else if (provider === 'claude') {
             return {
                 baseURL: 'https://api.anthropic.com/v1/',
-                apiKey: env.ANTHROPIC_API_KEY,
+                apiKey: await getApiKey('anthropic', env, userId),
             };
         }
         providerForcedOverride = provider as AIGatewayProviders;
