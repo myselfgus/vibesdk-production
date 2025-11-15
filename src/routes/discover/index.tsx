@@ -53,7 +53,7 @@ export default function DiscoverPage() {
 	});
 
 	return (
-		<div className="min-h-screen">
+		<div className="min-h-screen bg-hexagon-beige">
 			<div className="container mx-auto px-4 py-8">
 				<motion.div
 					initial={{ opacity: 0, y: -20 }}

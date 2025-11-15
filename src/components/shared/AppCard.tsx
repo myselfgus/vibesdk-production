@@ -424,8 +424,8 @@ export const AppCard = React.memo<AppCardProps>(
 				>
 					<Card
 						className={cn(
-							'h-full transition-all duration-300 ease-out cursor-pointer group relative overflow-hidden rounded-md p-2 bg-bg-1 hover:!bg-text hover:dark:!bg-text-primary',
-							'border border-border-primary hover:border-border-primary/60',
+							'h-full transition-all duration-300 ease-out cursor-pointer group relative overflow-hidden rounded-2xl p-3 glass-effect hover:shadow-dialog',
+							'hover:scale-[1.02] transform-gpu',
 						)}
 					>
 					{/* Enhanced Preview Section with High-Quality Rendering */}
