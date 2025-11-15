@@ -21,7 +21,7 @@ import { ViewModeSwitch } from './components/view-mode-switch';
 import { DebugPanel, type DebugMessage } from './components/debug-panel';
 import { DeploymentControls } from './components/deployment-controls';
 import { useChat, type FileType } from './hooks/use-chat';
-import { type ModelConfigsData, type BlueprintType, SUPPORTED_IMAGE_MIME_TYPES } from '@/api-types';
+import { type ModelConfigsData, type BlueprintType, SUPPORTED_IMAGE_MIME_TYPES, SUPPORTED_FILE_MIME_TYPES } from '@/api-types';
 import { Copy } from './components/copy';
 import { useFileContentStream } from './hooks/use-file-content-stream';
 import { logger } from '@/utils/logger';
@@ -34,8 +34,11 @@ import { GitCloneModal } from '@/components/shared/GitCloneModal';
 import { ModelConfigInfo } from './components/model-config-info';
 import { useAutoScroll } from '@/hooks/use-auto-scroll';
 import { useImageUpload } from '@/hooks/use-image-upload';
+import { useFileUpload } from '@/hooks/use-file-upload';
 import { useDragDrop } from '@/hooks/use-drag-drop';
 import { ImageAttachmentPreview } from '@/components/image-attachment-preview';
+import { FileAttachmentPreview } from '@/components/file-attachment-preview';
+import { FileUploadButton } from '@/components/file-upload-button';
 import { createAIMessage } from './utils/message-helpers';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -233,6 +236,12 @@ export default function Chat() {
 		},
 	});
 	const imageInputRef = useRef<HTMLInputElement>(null);
+
+	const { files: attachedFiles, addFiles, removeFile, clearFiles, isProcessing: isProcessingFiles } = useFileUpload({
+		onError: (error) => {
+			console.error('Chat file upload error:', error);
+		},
+	});
 
 	// Fake stream bootstrap files
 	const { streamedFiles: streamedBootstrapFiles, doneStreaming } =
@@ -453,8 +462,27 @@ export default function Chat() {
 
 	const chatFormRef = useRef<HTMLFormElement>(null);
 	const { isDragging: isChatDragging, dragHandlers: chatDragHandlers } = useDragDrop({
-		onFilesDropped: addImages,
-		accept: [...SUPPORTED_IMAGE_MIME_TYPES],
+		onFilesDropped: (droppedFiles) => {
+			// Separate images and other files
+			const imageFiles: File[] = [];
+			const otherFiles: File[] = [];
+
+			droppedFiles.forEach(file => {
+				if (SUPPORTED_IMAGE_MIME_TYPES.includes(file.type as typeof SUPPORTED_IMAGE_MIME_TYPES[number])) {
+					imageFiles.push(file);
+				} else {
+					otherFiles.push(file);
+				}
+			});
+
+			if (imageFiles.length > 0) {
+				addImages(imageFiles);
+			}
+			if (otherFiles.length > 0) {
+				addFiles(otherFiles);
+			}
+		},
+		accept: [...SUPPORTED_FILE_MIME_TYPES],
 		disabled: isChatDisabled,
 	});
 
@@ -473,18 +501,22 @@ export default function Chat() {
 					type: 'user_suggestion',
 					message: newMessage,
 					images: images.length > 0 ? images : undefined,
+					files: attachedFiles.length > 0 ? attachedFiles : undefined,
 				}),
 			);
 			sendUserMessage(newMessage);
 			setNewMessage('');
-			// Clear images after sending
+			// Clear images and files after sending
 			if (images.length > 0) {
 				clearImages();
+			}
+			if (attachedFiles.length > 0) {
+				clearFiles();
 			}
 			// Ensure we scroll after sending our own message
 			requestAnimationFrame(() => scrollToBottom());
 		},
-		[newMessage, websocket, sendUserMessage, isChatDisabled, scrollToBottom, images, clearImages],
+		[newMessage, websocket, sendUserMessage, isChatDisabled, scrollToBottom, images, clearImages, attachedFiles, clearFiles],
 	);
 
 	const [progress, total] = useMemo((): [number, number] => {
@@ -739,7 +771,7 @@ export default function Chat() {
 					<div className="relative">
 						{isChatDragging && (
 							<div className="absolute inset-0 flex items-center justify-center bg-accent/10 backdrop-blur-sm rounded-xl z-50 pointer-events-none">
-								<p className="text-accent font-medium">Drop images here</p>
+								<p className="text-accent font-medium">Drop files here</p>
 							</div>
 						)}
 						{images.length > 0 && (
@@ -747,6 +779,15 @@ export default function Chat() {
 								<ImageAttachmentPreview
 									images={images}
 									onRemove={removeImage}
+									compact
+								/>
+							</div>
+						)}
+						{attachedFiles.length > 0 && (
+							<div className="mb-2">
+								<FileAttachmentPreview
+									files={attachedFiles}
+									onRemove={removeFile}
 									compact
 								/>
 							</div>
@@ -829,6 +870,13 @@ export default function Chat() {
 								>
 									<ImageIcon className="size-4" strokeWidth={1.5} />
 								</button>
+								<FileUploadButton
+									onFilesSelected={addFiles}
+									disabled={isChatDisabled || isProcessingFiles}
+									className="p-1 hover:bg-bg-3"
+									iconClassName="size-4"
+									showFolderUpload={true}
+								/>
 								<button
 									type="submit"
 									disabled={!newMessage.trim() || isChatDisabled}
