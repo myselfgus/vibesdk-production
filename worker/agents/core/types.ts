@@ -8,6 +8,19 @@ import { TemplateSelection } from '../schemas';
 import { CurrentDevState } from './state';
 import { ProcessedImageAttachment } from 'worker/types/image-attachment';
 
+/**
+ * Processed file attachment with decoded text content
+ */
+export interface ProcessedFileAttachment {
+    type: 'text' | 'image';
+    filename: string;
+    mimeType: string;
+    content?: string;
+    base64Data?: string;
+    size: number;
+    relativePath?: string;
+}
+
 export interface AgentInitArgs {
     query: string;
     language?: string;

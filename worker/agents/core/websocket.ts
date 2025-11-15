@@ -4,6 +4,7 @@ import { WebSocketMessageRequests, WebSocketMessageResponses } from '../constant
 import { SimpleCodeGeneratorAgent } from './simpleGeneratorAgent';
 import { WebSocketMessage, WebSocketMessageData, WebSocketMessageType } from '../../api/websocketTypes';
 import { MAX_IMAGES_PER_MESSAGE, MAX_IMAGE_SIZE_BYTES } from '../../types/image-attachment';
+import { MAX_FILES_PER_MESSAGE, MAX_FILE_SIZE_BYTES } from '../../types/file-attachment';
 
 const logger = createLogger('CodeGeneratorWebSocket');
 
@@ -129,31 +130,49 @@ export function handleWebSocketMessage(agent: SimpleCodeGeneratorAgent, connecti
                 logger.info('Received user suggestion', {
                     messageLength: parsedMessage.message?.length || 0,
                     hasImages: !!parsedMessage.images && parsedMessage.images.length > 0,
-                    imageCount: parsedMessage.images?.length || 0
+                    imageCount: parsedMessage.images?.length || 0,
+                    hasFiles: !!parsedMessage.files && parsedMessage.files.length > 0,
+                    fileCount: parsedMessage.files?.length || 0
                 });
-                
+
                 if (!parsedMessage.message) {
                     sendError(connection, 'No message provided in user suggestion');
                     return;
                 }
-                
-                // Validate image count and size
+
+                // Validate image count and size (legacy support)
                 if (parsedMessage.images && parsedMessage.images.length > 0) {
                     if (parsedMessage.images.length > MAX_IMAGES_PER_MESSAGE) {
                         sendError(connection, `Maximum ${MAX_IMAGES_PER_MESSAGE} images allowed per message. Received ${parsedMessage.images.length} images.`);
                         return;
                     }
-                    
+
                     // Validate each image size
                     for (const image of parsedMessage.images) {
-                        if (image.size > MAX_IMAGE_SIZE_BYTES) {
+                        if (image.size && image.size > MAX_IMAGE_SIZE_BYTES) {
                             sendError(connection, `Image "${image.filename}" exceeds maximum size of ${MAX_IMAGE_SIZE_BYTES / (1024 * 1024)}MB`);
                             return;
                         }
                     }
                 }
-                
-                agent.handleUserInput(parsedMessage.message, parsedMessage.images).catch((error: unknown) => {
+
+                // Validate file attachments count and size
+                if (parsedMessage.files && parsedMessage.files.length > 0) {
+                    if (parsedMessage.files.length > MAX_FILES_PER_MESSAGE) {
+                        sendError(connection, `Maximum ${MAX_FILES_PER_MESSAGE} files allowed per message. Received ${parsedMessage.files.length} files.`);
+                        return;
+                    }
+
+                    // Validate each file size
+                    for (const file of parsedMessage.files) {
+                        if (file.size > MAX_FILE_SIZE_BYTES) {
+                            sendError(connection, `File "${file.filename}" exceeds maximum size of ${MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB`);
+                            return;
+                        }
+                    }
+                }
+
+                agent.handleUserInput(parsedMessage.message, parsedMessage.images, parsedMessage.files).catch((error: unknown) => {
                     logger.error('Error handling user suggestion:', error);
                     sendError(connection, `Error processing user suggestion: ${error instanceof Error ? error.message : String(error)}`);
                 });

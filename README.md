@@ -272,7 +272,7 @@ class CodeGeneratorAgent extends DurableObject {
 export default {
   async fetch(request, env) {
     const appId = extractAppId(request);
-    const userApp = env.DISPATCHER.get(appId);
+    const userApp = env.META_MCP.get(appId);
     return await userApp.fetch(request);
   }
 };

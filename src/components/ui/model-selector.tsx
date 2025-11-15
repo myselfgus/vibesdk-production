@@ -52,13 +52,45 @@ export function ModelSelector({
   const [search, setSearch] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
 
+  // Group models by provider
+  const groupedModels = useMemo(() => {
+    const groups: Record<string, ModelOption[]> = {};
+
+    availableModels.forEach(model => {
+      const providerKey = model.provider || 'platform';
+      if (!groups[providerKey]) {
+        groups[providerKey] = [];
+      }
+      groups[providerKey].push(model);
+    });
+
+    // Sort providers: platform first, then alphabetically
+    const sortedProviders = Object.keys(groups).sort((a, b) => {
+      if (a === 'platform') return -1;
+      if (b === 'platform') return 1;
+      return a.localeCompare(b);
+    });
+
+    return sortedProviders.map(provider => ({
+      provider,
+      models: groups[provider].sort((a, b) => a.label.localeCompare(b.label))
+    }));
+  }, [availableModels]);
+
   // Filter models based on search
-  const filteredModels = useMemo(() => {
-    if (!search) return availableModels;
-    return availableModels.filter(model => 
-      model.label.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [availableModels, search]);
+  const filteredGroupedModels = useMemo(() => {
+    if (!search) return groupedModels;
+
+    return groupedModels
+      .map(group => ({
+        ...group,
+        models: group.models.filter(model =>
+          model.label.toLowerCase().includes(search.toLowerCase()) ||
+          group.provider.toLowerCase().includes(search.toLowerCase())
+        )
+      }))
+      .filter(group => group.models.length > 0);
+  }, [groupedModels, search]);
 
   // Get display name for selected value
   const getSelectedDisplay = () => {
@@ -128,7 +160,7 @@ export function ModelSelector({
           </div>
           
           {/* Scrollable List */}
-          <div 
+          <div
             ref={listRef}
             className="max-h-[300px] overflow-y-auto p-1 scroll-smooth"
             onWheel={(e) => {
@@ -137,12 +169,12 @@ export function ModelSelector({
             }}
           >
             {/* No results */}
-            {filteredModels.length === 0 && !includeDefaultOption && (
+            {filteredGroupedModels.length === 0 && !includeDefaultOption && (
               <div className="py-6 text-center text-sm text-text-tertiary">
                 No models found.
               </div>
             )}
-            
+
             {/* Default option if requested */}
             {includeDefaultOption && (
               <div
@@ -168,33 +200,43 @@ export function ModelSelector({
                 </div>
               </div>
             )}
-            
-            {/* Available models */}
-            {filteredModels.map((model) => (
-              <div
-                key={model.value}
-                onClick={() => {
-                  onValueChange(model.value);
-                  setOpen(false);
-                  setSearch('');
-                }}
-                className={cn(
-                  "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-text-secondary focus:bg-accent focus:text-text-secondary",
-                  value === model.value && "bg-accent text-text-secondary"
-                )}
-              >
-                <div className="flex items-center gap-2 min-w-0 flex-1">
-                  <Check
+
+            {/* Grouped models by provider */}
+            {filteredGroupedModels.map((group) => (
+              <div key={group.provider} className="mb-2 last:mb-0">
+                {/* Provider header */}
+                <div className="px-2 py-1.5 text-xs font-semibold text-text-tertiary uppercase tracking-wider bg-bg-3/30 sticky top-0 z-10">
+                  {group.provider === 'platform' ? 'Platform Models' : `${group.provider.charAt(0).toUpperCase() + group.provider.slice(1)}`}
+                </div>
+
+                {/* Models in this provider group */}
+                {group.models.map((model) => (
+                  <div
+                    key={model.value}
+                    onClick={() => {
+                      onValueChange(model.value);
+                      setOpen(false);
+                      setSearch('');
+                    }}
                     className={cn(
-                      "h-4 w-4 text-text-primary shrink-0",
-                      value === model.value ? "opacity-100" : "opacity-0"
+                      "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-text-secondary focus:bg-accent focus:text-text-secondary",
+                      value === model.value && "bg-accent text-text-secondary"
                     )}
-                  />
-                  <span className="truncate">{model.label}</span>
-                </div>
-                <div className="flex items-center gap-1 ml-2 shrink-0">
-                  {getModelBadge(model)}
-                </div>
+                  >
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <Check
+                        className={cn(
+                          "h-4 w-4 text-text-primary shrink-0",
+                          value === model.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      <span className="truncate">{model.label}</span>
+                    </div>
+                    <div className="flex items-center gap-1 ml-2 shrink-0">
+                      {getModelBadge(model)}
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
