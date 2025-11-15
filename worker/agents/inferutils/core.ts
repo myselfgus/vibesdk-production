@@ -269,7 +269,8 @@ export async function getConfigurationForModel(
         const parts = model.split('/');
         if (parts.length >= 3) {
             const provider = parts[1]; // e.g., 'anthropic', 'openai', 'grok'
-            const modelName = parts.slice(2).join('/'); // e.g., 'claude-sonnet-4-5-20250929'
+            // Note: modelName extracted here but not currently used in this path
+            // const modelName = parts.slice(2).join('/'); // e.g., 'claude-sonnet-4-5-20250929'
 
             // Get the base URL for Cloudflare AI Gateway
             // Use CLOUDFLARE_AI_GATEWAY_URL if set, otherwise construct from environment
