@@ -133,33 +133,9 @@ export default function Home() {
 	const discoverLinkRef = useRef<HTMLDivElement>(null);
 
 	return (
-		<div className="relative flex flex-col items-center size-full">
-			{/* Dotted background pattern - extends to full viewport */}
-			<div className="fixed inset-0 text-accent z-0 opacity-20 pointer-events-none">
-				<svg width="100%" height="100%">
-					<defs>
-						<pattern
-							id=":S2:"
-							viewBox="-6 -6 12 12"
-							patternUnits="userSpaceOnUse"
-							width="12"
-							height="12"
-						>
-							<circle
-								cx="0"
-								cy="0"
-								r="1"
-								fill="currentColor"
-							></circle>
-						</pattern>
-					</defs>
-					<rect
-						width="100%"
-						height="100%"
-						fill="url(#:S2:)"
-					></rect>
-				</svg>
-			</div>
+		<div className="relative flex flex-col items-center size-full bg-hexagon-beige">
+			{/* Hexagonal beige background pattern */}
+			<div className="fixed inset-0 z-0 pointer-events-none opacity-60" />
 			
 			<LayoutGroup>
 				<div className="rounded-md w-full max-w-2xl overflow-hidden">
@@ -181,7 +157,7 @@ export default function Home() {
 								const query = textareaRef.current!.value;
 								handleCreateApp(query, agentMode);
 							}}
-							className="flex z-10 flex-col w-full min-h-[150px] bg-bg-4 border border-accent/30 dark:border-accent/50 dark:bg-bg-2 rounded-[18px] shadow-textarea p-5 transition-all duration-200"
+							className="flex z-10 flex-col w-full min-h-[150px] glass-effect rounded-[24px] shadow-elevation p-6 transition-all duration-300 hover:shadow-dialog"
 						>
 							<div 
 								className={clsx(
@@ -242,7 +218,7 @@ export default function Home() {
 								<button
 									type="submit"
 									disabled={!query.trim()}
-									className="bg-accent text-white p-1 rounded-md *:size-5 transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+									className="neumorphic text-accent p-2 rounded-xl *:size-5 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									<ArrowRight />
 								</button>
