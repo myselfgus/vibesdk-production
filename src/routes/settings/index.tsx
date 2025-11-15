@@ -63,6 +63,7 @@ import AnthropicLogo from '@/assets/provider-logos/anthropic.svg?react';
 import GoogleLogo from '@/assets/provider-logos/google.svg?react';
 import CerebrasLogo from '@/assets/provider-logos/cerebras.svg?react';
 import CloudflareLogo from '@/assets/provider-logos/cloudflare.svg?react';
+import XAILogo from '@/assets/provider-logos/xai.svg?react';
 
 export default function SettingsPage() {
 	const { user } = useAuth();
@@ -459,6 +460,7 @@ export default function SettingsPage() {
 		google: GoogleLogo,
 		cerebras: CerebrasLogo,
 		cloudflare: CloudflareLogo,
+		xai: XAILogo,
 	};
 
 	const getProviderLogo = (
@@ -891,12 +893,10 @@ export default function SettingsPage() {
 										size="sm"
 										variant="outline"
 										onClick={() => setByokModalOpen(true)}
-                                        disabled // DISABLED: BYOK Disabled for security reasons
 										className="gap-2"
 									>
 										<Key className="h-4 w-4" />
-										{/* Manage BYOK Keys */}
-                                        Coming Soon
+										Manage BYOK Keys
 									</Button>
 								</div>
 
@@ -913,9 +913,7 @@ export default function SettingsPage() {
 												<Key className="h-8 w-8 text-text-tertiary mx-auto mb-2" />
 
 												<p className="text-sm text-text-tertiary">
-													{/* Add your LLM keys to use
-													your own billing */}
-                                                    Coming Soon: You would be able to add your own LLM keys to bypass rate limits from here.
+													Add your LLM keys to use your own billing
 												</p>
 											</div>
 										);

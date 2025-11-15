@@ -60,6 +60,9 @@ export function GlobalHeader() {
 										marginLeft: '8px',
 									}}
 								/>
+								<span className="text-lg font-bold tracking-wider ml-3" style={{ fontFamily: 'Josefin Sans' }}>
+									CONCEPT2CODE
+								</span>
 								{hasMaintenanceMessage && (
 									<button
 										type="button"

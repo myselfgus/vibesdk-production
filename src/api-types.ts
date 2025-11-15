@@ -194,12 +194,25 @@ export interface StreamingResponse {
 export type AgentStreamingResponse = StreamingResponse;
 
 export {
-	type ImageAttachment, 
-	isSupportedImageType, 
+	type ImageAttachment,
+	isSupportedImageType,
 	MAX_IMAGE_SIZE_BYTES,
 	MAX_IMAGES_PER_MESSAGE,
 	SUPPORTED_IMAGE_MIME_TYPES
 } from 'worker/types/image-attachment';
+
+export {
+	type FileAttachment,
+	type FileAttachmentType,
+	type SupportedFileMimeType,
+	isSupportedFileType,
+	getFileTypeCategory,
+	getFileExtensionFromMimeType,
+	getFileTypeName,
+	MAX_FILE_SIZE_BYTES,
+	MAX_FILES_PER_MESSAGE,
+	SUPPORTED_FILE_MIME_TYPES
+} from 'worker/types/file-attachment';
 
 // Auth types imported from worker
 export type { 

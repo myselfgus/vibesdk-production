@@ -160,6 +160,19 @@ export function getTemplatesData(): SecretTemplate[] {
 			required: false,
 			category: 'byok',
 		},
+		{
+			id: 'XAI_API_KEY_BYOK',
+			displayName: 'xAI Grok (BYOK)',
+			envVarName: 'XAI_API_KEY_BYOK',
+			provider: 'xai',
+			icon: '🤖',
+			description: 'Use your xAI API key for Grok models via Cloudflare AI Gateway',
+			instructions: 'Go to console.x.ai → API Keys → Create new key',
+			placeholder: 'xai-...',
+			validation: '^xai-.{10,}$',
+			required: false,
+			category: 'byok',
+		},
 
 		// Development Tools
 		{
