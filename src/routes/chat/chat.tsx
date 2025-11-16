@@ -450,15 +450,11 @@ export default function Chat() {
 		);
 	}, [isBootstrapping, isGeneratingBlueprint]);
 
-	// Check if chat input should be disabled (before blueprint completion, or during debugging)
+	// Check if chat input should be disabled (only during debugging)
+	// File uploads are allowed at any time, including before blueprint completion
 	const isChatDisabled = useMemo(() => {
-		const blueprintStage = projectStages.find(
-			(stage) => stage.id === 'blueprint',
-		);
-		const blueprintNotCompleted = !blueprintStage || blueprintStage.status !== 'completed';
-
-		return blueprintNotCompleted || isDebugging;
-	}, [projectStages, isDebugging]);
+		return isDebugging;
+	}, [isDebugging]);
 
 	const chatFormRef = useRef<HTMLFormElement>(null);
 	const { isDragging: isChatDragging, dragHandlers: chatDragHandlers } = useDragDrop({
