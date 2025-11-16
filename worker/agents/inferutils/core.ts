@@ -310,7 +310,7 @@ export async function getConfigurationForModel(
                 apiKey = await getApiKey('anthropic', env, userId);
             } else if (provider === 'openai' || provider.includes('gpt')) {
                 apiKey = await getApiKey('openai', env, userId);
-            } else if (provider === 'grok' || provider === 'xai') {
+            } else if (provider === 'grok' || provider === 'xai' || provider.includes('grok')) {
                 apiKey = await getApiKey('xai', env, userId);
             } else {
                 apiKey = await getApiKey(provider, env, userId);
