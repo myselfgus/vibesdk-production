@@ -666,7 +666,7 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
         let response: OpenAI.ChatCompletion | OpenAI.ChatCompletionChunk | Stream<OpenAI.ChatCompletionChunk>;
         try {
             // Call OpenAI API with proper structured output format
-            response = await client.chat.completions.create(completionOptions, {
+            response = await client.chat.completions.create(completionOptions as any, {
                 signal: abortSignal,
                 headers: {
                     "cf-aig-metadata": JSON.stringify({
