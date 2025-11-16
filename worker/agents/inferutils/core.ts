@@ -285,52 +285,7 @@ export async function getConfigurationForModel(
     apiKey: string,
     defaultHeaders?: Record<string, string>,
 }> {
-    let providerForcedOverride: AIGatewayProviders | undefined;
-
-    // Check for cloudflare-gateway prefix (custom gateway configuration)
-    if (model.startsWith('cloudflare-gateway/')) {
-        // Extract provider and model from format: cloudflare-gateway/provider/model
-        const parts = model.split('/');
-        if (parts.length >= 3) {
-            const provider = parts[1]; // e.g., 'anthropic', 'openai', 'grok'
-            // Note: modelName extracted here but not currently used in this path
-            // const modelName = parts.slice(2).join('/'); // e.g., 'claude-sonnet-4-5-20250929'
-
-            // Get the base URL for Cloudflare AI Gateway
-            // Use CLOUDFLARE_AI_GATEWAY_URL if set, otherwise construct from environment
-            let baseURL = env.CLOUDFLARE_AI_GATEWAY_URL;
-            if (!baseURL || baseURL === 'none' || baseURL.trim() === '') {
-                // Default construction if not provided
-                baseURL = 'https://gateway.ai.cloudflare.com/v1/1a481f7cdb7027c30174a692c89cbda1/voither/compat';
-            }
-
-            // Get API key based on provider (with BYOK support)
-            let apiKey: string;
-            if (provider === 'anthropic' || provider.includes('claude')) {
-                apiKey = await getApiKey('anthropic', env, userId);
-            } else if (provider === 'openai' || provider.includes('gpt')) {
-                apiKey = await getApiKey('openai', env, userId);
-            } else if (provider === 'grok' || provider === 'xai' || provider.includes('grok')) {
-                apiKey = await getApiKey('xai', env, userId);
-            } else {
-                apiKey = await getApiKey(provider, env, userId);
-            }
-
-            // Add Cloudflare AI Gateway authorization header
-            const defaultHeaders: Record<string, string> = {};
-            if (env.CLOUDFLARE_AI_GATEWAY_TOKEN && env.CLOUDFLARE_AI_GATEWAY_TOKEN.trim() !== '') {
-                defaultHeaders['cf-aig-authorization'] = `Bearer ${env.CLOUDFLARE_AI_GATEWAY_TOKEN}`;
-            }
-
-            return {
-                baseURL,
-                apiKey,
-                defaultHeaders: Object.keys(defaultHeaders).length > 0 ? defaultHeaders : undefined,
-            };
-        }
-    }
-
-    // Check if provider forceful-override is set
+    // Check if provider override is set with brackets
     const match = model.match(/\[(.*?)\]/);
     if (match) {
         const provider = match[1];
@@ -346,28 +301,59 @@ export async function getConfigurationForModel(
             };
         } else if (provider === 'claude') {
             return {
-                baseURL: 'https://api.anthropic.com/v1/',
+                baseURL: 'https://api.anthropic.com/v1',
                 apiKey: await getApiKey('anthropic', env, userId),
             };
+        } else if (provider === 'xai' || provider === 'grok') {
+            return {
+                baseURL: 'https://api.x.ai/v1',
+                apiKey: await getApiKey('xai', env, userId),
+            };
         }
-        providerForcedOverride = provider as AIGatewayProviders;
     }
 
-    const baseURL = await buildGatewayUrl(env, providerForcedOverride);
-
-    // Extract the provider name from model name. Model name is of type `provider/model_name`
-    const provider = providerForcedOverride || model.split('/')[0];
-    // Try to find API key of type <PROVIDER>_API_KEY else default to CLOUDFLARE_AI_GATEWAY_TOKEN
-    // `env` is an interface of type `Env`
+    // Determine provider from model name
+    const provider = model.split('/')[0].toLowerCase();
+    
+    // Claude models use Anthropic API directly
+    if (provider === 'claude' || provider === 'anthropic') {
+        return {
+            baseURL: 'https://api.anthropic.com/v1',
+            apiKey: await getApiKey('anthropic', env, userId),
+        };
+    }
+    
+    // xAI Grok models use xAI API
+    if (provider === 'xai' || provider === 'grok') {
+        return {
+            baseURL: 'https://api.x.ai/v1',
+            apiKey: await getApiKey('xai', env, userId),
+        };
+    }
+    
+    // Google Gemini models
+    if (provider === 'google-ai-studio' || provider === 'gemini') {
+        return {
+            baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
+            apiKey: await getApiKey('google-ai-studio', env, userId),
+        };
+    }
+    
+    // OpenAI models
+    if (provider === 'openai') {
+        return {
+            baseURL: 'https://api.openai.com/v1',
+            apiKey: await getApiKey('openai', env, userId),
+        };
+    }
+    
+    // Fallback to generic OpenAI-compatible endpoint
+    const baseURL = await buildGatewayUrl(env);
     const apiKey = await getApiKey(provider, env, userId);
-    // AI Gateway Wholesaling checks
-    const defaultHeaders = env.CLOUDFLARE_AI_GATEWAY_TOKEN && apiKey !== env.CLOUDFLARE_AI_GATEWAY_TOKEN ? {
-        'cf-aig-authorization': `Bearer ${env.CLOUDFLARE_AI_GATEWAY_TOKEN}`,
-    } : undefined;
+    
     return {
         baseURL,
         apiKey,
-        defaultHeaders
     };
 }
 
