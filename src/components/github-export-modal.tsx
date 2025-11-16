@@ -15,8 +15,8 @@ import { apiClient } from '@/lib/api-client';
 // Shared button styles
 const BUTTON_STYLES = {
     primary: 'bg-brand hover:bg-brand/90 text-text-on-brand py-2 px-4 rounded-lg transition-colors',
-    secondary: 'bg-bg-2 hover:bg-border text-text-primary py-2 px-4 rounded-lg transition-colors',
-    ghost: 'bg-transparent hover:bg-bg-2 text-text-primary/60 hover:text-text-primary py-2 px-4 rounded-lg transition-colors',
+    secondary: 'bg-background hover:bg-border text-foreground py-2 px-4 rounded-lg transition-colors',
+    ghost: 'bg-transparent hover:bg-background text-foreground/60 hover:text-foreground py-2 px-4 rounded-lg transition-colors',
     warning: 'bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium transition-colors',
     danger: 'bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors'
 } as const;
@@ -77,14 +77,14 @@ const ModalHeader: React.FC<{ mode: string; existingUrl?: string | null; onClose
     ({ mode, existingUrl, onClose, disabled }) => (
     <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-            <div className="p-2 bg-bg-2 rounded-lg">
-                <Github className="w-5 h-5 text-text-secondary" />
+            <div className="p-2 bg-background rounded-lg">
+                <Github className="w-5 h-5 text-muted-foreground" />
             </div>
             <div>
-                <h2 className="text-lg font-semibold text-text-secondary">
+                <h2 className="text-lg font-semibold text-muted-foreground">
                     {mode === 'sync' ? 'Sync to GitHub' : 'Export to GitHub'}
                 </h2>
-                <p className="text-sm text-text-primary/60">
+                <p className="text-sm text-foreground/60">
                     {mode === 'sync' && existingUrl
                         ? `Update ${extractRepoName(existingUrl)} with your latest changes`
                         : 'Create a new repository with your generated code'
@@ -93,8 +93,8 @@ const ModalHeader: React.FC<{ mode: string; existingUrl?: string | null; onClose
             </div>
         </div>
         {!disabled && (
-            <button onClick={onClose} className="p-1 hover:bg-bg-2 rounded-md transition-colors">
-                <X className="w-5 h-5 text-text-primary/60" />
+            <button onClick={onClose} className="p-1 hover:bg-background rounded-md transition-colors">
+                <X className="w-5 h-5 text-foreground/60" />
             </button>
         )}
     </div>
@@ -104,8 +104,8 @@ const StatusMessage: React.FC<{ icon: React.ComponentType<any>; iconColor: strin
     ({ icon: Icon, iconColor, title, message, children }) => (
     <div className="text-center py-8">
         <Icon className={`w-12 h-12 ${iconColor} mx-auto mb-4`} />
-        <h3 className="text-lg font-semibold text-text-primary mb-2">{title}</h3>
-        <p className="text-sm text-text-primary/60 mb-4">{message}</p>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
+        <p className="text-sm text-foreground/60 mb-4">{message}</p>
         {children}
     </div>
 );
@@ -113,7 +113,7 @@ const StatusMessage: React.FC<{ icon: React.ComponentType<any>; iconColor: strin
 const ProgressStep: React.FC<{ label: string; isActive: boolean; isComplete: boolean }> = 
     ({ label, isActive, isComplete }) => (
     <div className={`flex items-center gap-1 ${
-        isActive ? 'text-brand' : isComplete ? 'text-green-500' : 'text-text-primary/40'
+        isActive ? 'text-brand' : isComplete ? 'text-green-500' : 'text-foreground/40'
     }`}>
         <div className="w-2 h-2 rounded-full bg-current" />
         {label}
@@ -266,7 +266,7 @@ export function GitHubExportModal({
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-bg-4 border border-border-primary rounded-xl max-w-md w-full p-6"
+                    className="bg-muted border border-border rounded-xl max-w-md w-full p-6"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <ModalHeader 
@@ -279,10 +279,10 @@ export function GitHubExportModal({
                     {showConflictWarning && remoteStatus && remoteStatus.aheadBy > 0 ? (
                         <div className="py-6">
                             <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-text-primary mb-2 text-center">
+                            <h3 className="text-lg font-semibold text-foreground mb-2 text-center">
                                 Repository Has Different History
                             </h3>
-                            <div className="text-sm text-text-primary/80 space-y-3">
+                            <div className="text-sm text-foreground/80 space-y-3">
                                 <p>
                                     Remote has <strong>{remoteStatus.aheadBy} commit(s)</strong> not in your app.
                                     Your app has <strong>{remoteStatus.behindBy} commit(s)</strong> not on GitHub.
@@ -291,11 +291,11 @@ export function GitHubExportModal({
                                 {remoteStatus.divergedCommits.length > 0 && (
                                     <div>
                                         <p className="font-medium mb-2">Commits that will be lost:</p>
-                                        <div className="bg-bg-2 rounded-lg p-3 max-h-32 overflow-y-auto space-y-2">
+                                        <div className="bg-background rounded-lg p-3 max-h-32 overflow-y-auto space-y-2">
                                             {remoteStatus.divergedCommits.slice(0, 5).map((commit, i) => (
                                                 <div key={i} className="text-xs">
                                                     <div className="font-medium">{commit.message}</div>
-                                                    <div className="text-text-primary/50">
+                                                    <div className="text-foreground/50">
                                                         {commit.author} • {new Date(commit.date).toLocaleString()}
                                                     </div>
                                                 </div>
@@ -366,7 +366,7 @@ export function GitHubExportModal({
                                     >
                                         {exportResult.existingRepositoryUrl}
                                     </a>
-                                    <p className="text-sm text-text-primary/60 mb-6">
+                                    <p className="text-sm text-foreground/60 mb-6">
                                         Would you like to sync your changes to this existing repository?
                                     </p>
                                 <div className="space-x-2">
@@ -405,16 +405,16 @@ export function GitHubExportModal({
                         <div className="py-8">
                             <div className="text-center mb-6">
                                 <Loader className="w-8 h-8 text-brand mx-auto mb-4 animate-spin" />
-                                <h3 className="text-lg font-semibold text-text-primary mb-2">Exporting to GitHub</h3>
-                                <p className="text-sm text-text-primary/60">{exportProgress.message}</p>
+                                <h3 className="text-lg font-semibold text-foreground mb-2">Exporting to GitHub</h3>
+                                <p className="text-sm text-foreground/60">{exportProgress.message}</p>
                             </div>
                             
                             <div className="mb-4">
-                                <div className="flex justify-between text-xs text-text-primary/60 mb-2">
+                                <div className="flex justify-between text-xs text-foreground/60 mb-2">
                                     <span>Progress</span>
                                     <span>{exportProgress.progress}%</span>
                                 </div>
-                                <div className="w-full bg-bg-2 rounded-full h-2">
+                                <div className="w-full bg-background rounded-full h-2">
                                     <motion.div
                                         className="bg-brand h-2 rounded-full"
                                         initial={{ width: 0 }}
@@ -473,7 +473,7 @@ export function GitHubExportModal({
                             )}
 
                             <div>
-                                <label className="block text-sm font-medium text-text-primary mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Repository Name *
                                 </label>
                                 <input
@@ -481,15 +481,15 @@ export function GitHubExportModal({
                                     value={repositoryName}
                                     onChange={(e) => setRepositoryName(e.target.value)}
                                     placeholder="my-awesome-app"
-                                    className="w-full px-3 py-2 bg-bg-2 border border-border-primary rounded-lg text-text-primary placeholder:text-text-primary/40 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
+                                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
                                     required
                                 />
                             </div>
 
                             {mode === 'sync' && existingGithubUrl && (
-                                <div className="p-3 bg-bg-2 rounded-lg space-y-2">
+                                <div className="p-3 bg-background rounded-lg space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <p className="text-xs font-medium text-text-primary/60">
+                                        <p className="text-xs font-medium text-foreground/60">
                                             Remote Repository
                                         </p>
                                         <button
@@ -505,14 +505,14 @@ export function GitHubExportModal({
                                         href={existingGithubUrl} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="text-xs text-text-primary/60 hover:text-brand transition-colors break-all flex items-center gap-1"
+                                        className="text-xs text-foreground/60 hover:text-brand transition-colors break-all flex items-center gap-1"
                                     >
                                         <Github className="w-3 h-3 flex-shrink-0" />
                                         {existingGithubUrl}
                                     </a>
 
                                     {isCheckingRemote ? (
-                                        <div className="flex items-center gap-2 text-xs text-text-primary/60 pt-1">
+                                        <div className="flex items-center gap-2 text-xs text-foreground/60 pt-1">
                                             <Loader className="w-3 h-3 animate-spin" />
                                             Checking sync status...
                                         </div>
@@ -551,7 +551,7 @@ export function GitHubExportModal({
                             
                             {mode !== 'sync' && (
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Description (Optional)
                                     </label>
                                     <textarea
@@ -559,18 +559,18 @@ export function GitHubExportModal({
                                         onChange={(e) => setDescription(e.target.value)}
                                         placeholder="A brief description of your app..."
                                         rows={3}
-                                        className="w-full px-3 py-2 bg-bg-2 border border-border-primary rounded-lg text-text-primary placeholder:text-text-primary/40 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand resize-none"
+                                        className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand resize-none"
                                     />
                                 </div>
                             )}
 
                             {mode !== 'sync' && (
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-3">
+                                    <label className="block text-sm font-medium text-foreground mb-3">
                                         Repository Privacy
                                     </label>
                                     <div className="space-y-2">
-                                        <label className="flex items-center gap-3 p-3 bg-bg-2 rounded-lg cursor-pointer hover:bg-border transition-colors">
+                                        <label className="flex items-center gap-3 p-3 bg-background rounded-lg cursor-pointer hover:bg-border transition-colors">
                                             <input
                                                 type="radio"
                                                 name="privacy"
@@ -578,13 +578,13 @@ export function GitHubExportModal({
                                                 onChange={() => setIsPrivate(false)}
                                                 className="w-4 h-4 text-brand focus:ring-brand/50"
                                             />
-                                            <Globe className="w-4 h-4 text-text-primary/60" />
+                                            <Globe className="w-4 h-4 text-foreground/60" />
                                             <div>
-                                                <p className="text-sm font-medium text-text-secondary">Public</p>
-                                                <p className="text-xs text-text-primary/60">Anyone can see this repository</p>
+                                                <p className="text-sm font-medium text-muted-foreground">Public</p>
+                                                <p className="text-xs text-foreground/60">Anyone can see this repository</p>
                                             </div>
                                         </label>
-                                        <label className="flex items-center gap-3 p-3 bg-bg-2 rounded-lg cursor-pointer hover:bg-border transition-colors">
+                                        <label className="flex items-center gap-3 p-3 bg-background rounded-lg cursor-pointer hover:bg-border transition-colors">
                                             <input
                                                 type="radio"
                                                 name="privacy"
@@ -592,10 +592,10 @@ export function GitHubExportModal({
                                                 onChange={() => setIsPrivate(true)}
                                                 className="w-4 h-4 text-brand focus:ring-brand/50"
                                             />
-                                            <Lock className="w-4 h-4 text-text-primary/60" />
+                                            <Lock className="w-4 h-4 text-foreground/60" />
                                             <div>
-                                                <p className="text-sm font-medium text-text-secondary">Private</p>
-                                                <p className="text-xs text-text-primary/60">Only you can see this repository</p>
+                                                <p className="text-sm font-medium text-muted-foreground">Private</p>
+                                                <p className="text-xs text-foreground/60">Only you can see this repository</p>
                                             </div>
                                         </label>
                                     </div>

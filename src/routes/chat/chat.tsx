@@ -450,15 +450,11 @@ export default function Chat() {
 		);
 	}, [isBootstrapping, isGeneratingBlueprint]);
 
-	// Check if chat input should be disabled (before blueprint completion, or during debugging)
+	// Check if chat input should be disabled (only during debugging)
+	// File uploads are allowed at any time, including before blueprint completion
 	const isChatDisabled = useMemo(() => {
-		const blueprintStage = projectStages.find(
-			(stage) => stage.id === 'blueprint',
-		);
-		const blueprintNotCompleted = !blueprintStage || blueprintStage.status !== 'completed';
-
-		return blueprintNotCompleted || isDebugging;
-	}, [projectStages, isDebugging]);
+		return isDebugging;
+	}, [isDebugging]);
 
 	const chatFormRef = useRef<HTMLFormElement>(null);
 	const { isDragging: isChatDragging, dragHandlers: chatDragHandlers } = useDragDrop({
@@ -557,7 +553,7 @@ export default function Chat() {
 	}
 
 	return (
-		<div className="size-full flex flex-col min-h-0 text-text-primary">
+		<div className="size-full flex flex-col min-h-0 text-foreground">
 			<div className="flex-1 flex min-h-0 overflow-hidden justify-center">
 				<motion.div
 					layout="position"
@@ -572,7 +568,7 @@ export default function Chat() {
 				>
 						<div className="pt-5 px-4 pb-4 text-sm flex flex-col gap-5">
 							{appLoading ? (
-								<div className="flex items-center gap-2 text-text-tertiary">
+								<div className="flex items-center gap-2 text-muted-foreground">
 									<LoaderCircle className="size-4 animate-spin" />
 									Loading app...
 								</div>
@@ -588,7 +584,7 @@ export default function Chat() {
 									/>
 									{import.meta.env
 										.VITE_AGENT_MODE_ENABLED && (
-										<div className="flex justify-between items-center py-2 border-b border-border-primary/50 mb-4">
+										<div className="flex justify-between items-center py-2 border-b border-border/50 mb-4">
 											<AgentModeDisplay
 												mode={
 													agentMode as
@@ -615,7 +611,7 @@ export default function Chat() {
 												<Button
 													variant="ghost"
 													size="icon"
-													className="hover:bg-bg-3/80 cursor-pointer"
+													className="hover:bg-secondary/80 cursor-pointer"
 												>
 													<MoreHorizontal className="h-4 w-4" />
 													<span className="sr-only">Chat actions</span>
@@ -827,7 +823,7 @@ export default function Chat() {
 												: 'Chat with AI...'
 								}
 								rows={1}
-								className="w-full bg-bg-2 border border-text-primary/10 rounded-xl px-3 pr-20 py-2 text-sm outline-none focus:border-white/20 drop-shadow-2xl text-text-primary placeholder:!text-text-primary/50 disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto no-scrollbar min-h-[36px] max-h-[120px]"
+								className="w-full bg-background border border-text-primary/10 rounded-xl px-3 pr-20 py-2 text-sm outline-none focus:border-white/20 drop-shadow-2xl text-foreground placeholder:!text-foreground/50 disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto no-scrollbar min-h-[36px] max-h-[120px]"
 								style={{
 									// Auto-resize based on content
 									height: 'auto',
@@ -850,12 +846,12 @@ export default function Chat() {
 												sendWebSocketMessage(websocket, 'stop_generation');
 											}
 										}}
-										className="p-1.5 rounded-md hover:bg-red-500/10 text-text-tertiary hover:text-red-500 transition-all duration-200 group relative"
+										className="p-1.5 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-all duration-200 group relative"
 										aria-label="Stop generation"
 										title="Stop generation"
 									>
 										<X className="size-4" strokeWidth={2} />
-										<span className="absolute -top-8 right-0 px-2 py-1 bg-bg-1 border border-border-primary rounded text-xs text-text-secondary whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+										<span className="absolute -top-8 right-0 px-2 py-1 bg-bg-1 border border-border rounded text-xs text-muted-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
 											Stop
 										</span>
 									</button>
@@ -864,7 +860,7 @@ export default function Chat() {
 									type="button"
 									onClick={() => imageInputRef.current?.click()}
 									disabled={isChatDisabled || isProcessing}
-									className="p-1.5 rounded-md hover:bg-bg-3 text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+									className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 									aria-label="Upload image"
 									title="Upload image"
 								>
@@ -873,14 +869,14 @@ export default function Chat() {
 								<FileUploadButton
 									onFilesSelected={addFiles}
 									disabled={isChatDisabled || isProcessingFiles}
-									className="p-1 hover:bg-bg-3"
+									className="p-1 hover:bg-secondary"
 									iconClassName="size-4"
 									showFolderUpload={true}
 								/>
 								<button
 									type="submit"
 									disabled={!newMessage.trim() || isChatDisabled}
-									className="p-1.5 rounded-md bg-accent/90 hover:bg-accent/80 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-transparent text-white disabled:text-text-primary transition-colors"
+									className="p-1.5 rounded-md bg-accent/90 hover:bg-accent/80 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-transparent text-white disabled:text-foreground transition-colors"
 								>
 									<ArrowRight className="size-4" />
 								</button>
@@ -899,8 +895,8 @@ export default function Chat() {
 						transition={{ duration: 0.3, ease: 'easeInOut' }}
 					>
 							{view === 'preview' && previewUrl && (
-								<div className="flex-1 flex flex-col bg-bg-3 rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border-primary">
-									<div className="grid grid-cols-3 px-2 h-10 border-b bg-bg-2">
+								<div className="flex-1 flex flex-col bg-secondary rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border">
+									<div className="grid grid-cols-3 px-2 h-10 border-b bg-background">
 										<div className="flex items-center">
 											<ViewModeSwitch
 												view={view}
@@ -918,7 +914,7 @@ export default function Chat() {
 												</span>
 												<Copy text={previewUrl} />
 												<button
-													className="p-1 hover:bg-bg-2 rounded transition-colors"
+													className="p-1 hover:bg-background rounded transition-colors"
 													onClick={() => {
 														setManualRefreshTrigger(
 															Date.now(),
@@ -926,7 +922,7 @@ export default function Chat() {
 													}}
 													title="Refresh preview"
 												>
-													<RefreshCw className="size-4 text-text-primary/50" />
+													<RefreshCw className="size-4 text-foreground/50" />
 												</button>
 											</div>
 										</div>
@@ -951,12 +947,12 @@ export default function Chat() {
 												loading={loadingConfigs}
 											/>
 											<button
-												className="group relative flex items-center gap-1.5 p-1.5 group-hover:pl-2 group-hover:pr-2.5 rounded-full group-hover:rounded-md transition-all duration-300 ease-in-out hover:bg-bg-4 border border-transparent hover:border-border-primary hover:shadow-sm overflow-hidden"
+												className="group relative flex items-center gap-1.5 p-1.5 group-hover:pl-2 group-hover:pr-2.5 rounded-full group-hover:rounded-md transition-all duration-300 ease-in-out hover:bg-muted border border-transparent hover:border-border hover:shadow-sm overflow-hidden"
 												onClick={() => setIsGitCloneModalOpen(true)}
 												title="Clone Repository"
 											>
 												<GitBranch className="size-3.5 text-brand-primary transition-colors duration-300 flex-shrink-0" />
-												<span className="max-w-0 group-hover:max-w-[70px] opacity-0 group-hover:opacity-100 overflow-hidden transition-all duration-300 ease-in-out whitespace-nowrap text-xs font-medium text-text-primary">
+												<span className="max-w-0 group-hover:max-w-[70px] opacity-0 group-hover:opacity-100 overflow-hidden transition-all duration-300 ease-in-out whitespace-nowrap text-xs font-medium text-foreground">
 													Git Clone
 												</span>
 											</button>
@@ -987,13 +983,13 @@ export default function Chat() {
 												GitHub
 											</button>
 											<button
-												className="p-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-bg-4 border border-transparent hover:border-border-primary hover:shadow-sm"
+												className="p-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-muted border border-transparent hover:border-border hover:shadow-sm"
 												onClick={() => {
 													previewRef.current?.requestFullscreen();
 												}}
 												title="Fullscreen"
 											>
-												<Expand className="size-3.5 text-text-primary/60 hover:text-brand-primary transition-colors duration-300" />
+												<Expand className="size-3.5 text-foreground/60 hover:text-brand-primary transition-colors duration-300" />
 											</button>
 										</div>
 									</div>
@@ -1014,9 +1010,9 @@ export default function Chat() {
 							)}
 
 							{view === 'blueprint' && (
-								<div className="flex-1 flex flex-col bg-bg-3 rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border-primary">
+								<div className="flex-1 flex flex-col bg-secondary rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border">
 									{/* Toolbar */}
-									<div className="grid grid-cols-3 px-2 h-10 bg-bg-2 border-b">
+									<div className="grid grid-cols-3 px-2 h-10 bg-background border-b">
 										<div className="flex items-center">
 											<ViewModeSwitch
 												view={view}
@@ -1041,7 +1037,7 @@ export default function Chat() {
 											{/* Right side - can add actions here if needed */}
 										</div>
 									</div>
-									<div className="flex-1 overflow-y-auto bg-bg-3">
+									<div className="flex-1 overflow-y-auto bg-secondary">
 										<div className="py-12 mx-auto">
 											<Blueprint
 												blueprint={
@@ -1058,8 +1054,8 @@ export default function Chat() {
 
                             {/* Disabled terminal for now */}
 							{/* {view === 'terminal' && (
-								<div className="flex-1 flex flex-col bg-bg-3 rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border-primary">
-									<div className="grid grid-cols-3 px-2 h-10 bg-bg-2 border-b">
+								<div className="flex-1 flex flex-col bg-secondary rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border">
+									<div className="grid grid-cols-3 px-2 h-10 bg-background border-b">
 										<div className="flex items-center">
 											<ViewModeSwitch
 												view={view}
@@ -1127,9 +1123,9 @@ export default function Chat() {
 							)} */}
 
 							{view === 'editor' && (
-								<div className="flex-1 flex flex-col bg-bg-3 rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border-primary">
+								<div className="flex-1 flex flex-col bg-secondary rounded-xl shadow-md shadow-bg-2 overflow-hidden border border-border">
 									{activeFile && (
-										<div className="grid grid-cols-3 px-2 h-10 bg-bg-2 border-b">
+										<div className="grid grid-cols-3 px-2 h-10 bg-background border-b">
 											<div className="flex items-center">
 												<ViewModeSwitch
 													view={view}
@@ -1190,13 +1186,13 @@ export default function Chat() {
 													loading={loadingConfigs}
 												/>
 												<button
-													className="p-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-bg-4 border border-transparent hover:border-border-primary hover:shadow-sm"
+													className="p-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-muted border border-transparent hover:border-border hover:shadow-sm"
 													onClick={() => {
 														editorRef.current?.requestFullscreen();
 													}}
 													title="Fullscreen"
 												>
-													<Expand className="size-3.5 text-text-primary/60 hover:text-brand-primary transition-colors duration-300" />
+													<Expand className="size-3.5 text-foreground/60 hover:text-brand-primary transition-colors duration-300" />
 												</button>
 											</div>
 										</div>
@@ -1276,7 +1272,7 @@ export default function Chat() {
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={handleResetConversation} className="bg-bg-2 hover:bg-bg-2/80 text-text-primary">
+						<AlertDialogAction onClick={handleResetConversation} className="bg-background hover:bg-background/80 text-foreground">
 							Reset
 						</AlertDialogAction>
 					</AlertDialogFooter>

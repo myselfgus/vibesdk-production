@@ -515,7 +515,7 @@ export default function SettingsPage() {
 	}, [user]);
 
 	return (
-		<div className="min-h-screen bg-bg-3 relative">
+		<div className="min-h-screen bg-secondary relative">
 			<main className="container mx-auto px-4 py-8 max-w-4xl">
 				<div className="space-y-8">
 					{/* Page Header */}
@@ -523,7 +523,7 @@ export default function SettingsPage() {
 						<h1 className="text-4xl font-bold font-[departureMono] text-red-500">
 							SETTINGS
 						</h1>
-						<p className="text-text-tertiary mt-2">
+						<p className="text-muted-foreground mt-2">
 							Manage your account settings and preferences
 						</p>
 					</div>
@@ -531,7 +531,7 @@ export default function SettingsPage() {
 					{/* Integrations Section */}
 					{/* <Card id="integrations">
 						<CardHeader variant="minimal">
-							<div className="flex items-center gap-3 border-b w-full py-3 text-text-primary">
+							<div className="flex items-center gap-3 border-b w-full py-3 text-foreground">
 								<Link className="h-4 w-4" />
 								<div>
 									<CardTitle>Integrations</CardTitle>
@@ -541,8 +541,8 @@ export default function SettingsPage() {
 						<CardContent className="space-y-4 px-6 mt-6">
 							{githubIntegration.loading ? (
 								<div className="flex items-center gap-3">
-									<Settings className="h-5 w-5 animate-spin text-text-tertiary" />
-									<span className="text-sm text-text-tertiary">
+									<Settings className="h-5 w-5 animate-spin text-muted-foreground" />
+									<span className="text-sm text-muted-foreground">
 										Loading GitHub integration status...
 									</span>
 								</div>
@@ -556,7 +556,7 @@ export default function SettingsPage() {
 											<p className="font-medium">
 												GitHub Connected
 											</p>
-											<p className="text-sm text-text-tertiary">
+											<p className="text-sm text-muted-foreground">
 												@
 												{
 													githubIntegration.githubUsername
@@ -585,20 +585,20 @@ export default function SettingsPage() {
 							) : (
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-bg-2 border-bg-1 dark:border-bg-4 border flex items-center justify-center">
-											<Github className="h-5 w-5 text-text-tertiary" />
+										<div className="h-10 w-10 rounded-full bg-background border-bg-1 dark:border-bg-4 border flex items-center justify-center">
+											<Github className="h-5 w-5 text-muted-foreground" />
 										</div>
 										<div>
 											<p className="font-medium">
 												GitHub App for Exports
 											</p>
 											<div className="flex items-center justify-between">
-												<span className="text-text-primary text-xs">
+												<span className="text-foreground text-xs">
 													Connect your GitHub account to export generated code directly to
 													repositories
 												</span>
 												{githubIntegration.loading && (
-													<RefreshCw className="w-3 h-3 text-text-primary/60 animate-spin" />
+													<RefreshCw className="w-3 h-3 text-foreground/60 animate-spin" />
 												)}
 											</div>
 										</div>
@@ -618,7 +618,7 @@ export default function SettingsPage() {
 					{/* Model Configuration Section */}
 					<Card id="model-configs">
 						<CardHeader variant="minimal">
-							<div className="flex items-center gap-3 border-b w-full py-3 text-text-primary">
+							<div className="flex items-center gap-3 border-b w-full py-3 text-foreground">
 								{' '}
 								<Settings className="h-5 w-5" />
 								<div>
@@ -634,7 +634,7 @@ export default function SettingsPage() {
 								<h4 className="font-medium">
 									Provider API Keys
 								</h4>
-								<p className="text-sm text-text-tertiary">
+								<p className="text-sm text-muted-foreground">
 									AI provider API keys are managed in the "API
 									Keys & Secrets" section below. Configure
 									your OpenAI, Anthropic, Google AI, and
@@ -682,7 +682,7 @@ export default function SettingsPage() {
 					{/* User Secrets Section */}
 					<Card id="secrets">
 						<CardHeader variant="minimal">
-							<div className="flex items-center gap-3 border-b w-full py-3 text-text-primary">
+							<div className="flex items-center gap-3 border-b w-full py-3 text-foreground">
 								<Key className="h-5 w-5" />
 								<div>
 									<CardTitle>API Keys & Secrets</CardTitle>
@@ -728,15 +728,15 @@ export default function SettingsPage() {
 
 								{userSecrets.loading ? (
 									<div className="flex items-center gap-3">
-										<Settings className="h-5 w-5 animate-spin text-text-tertiary" />
-										<span className="text-sm text-text-tertiary">
+										<Settings className="h-5 w-5 animate-spin text-muted-foreground" />
+										<span className="text-sm text-muted-foreground">
 											Loading secrets...
 										</span>
 									</div>
 								) : userSecrets.secrets.length === 0 ? (
 									<div className="text-center py-8 border-2 border-dashed dark:border-bg-4 rounded-lg">
-										<Key className="h-8 w-8 text-text-tertiary mx-auto mb-2" />
-										<p className="text-sm text-text-tertiary">
+										<Key className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+										<p className="text-sm text-muted-foreground">
 											Add API keys and secrets that your
 											generated apps can use
 										</p>
@@ -755,8 +755,8 @@ export default function SettingsPage() {
 													key={secret.id}
 													className={`flex items-center justify-between p-4 border rounded-lg transition-colors ${
 														secret.isActive
-															? 'bg-bg-4'
-															: 'bg-bg-3/20 border-dashed opacity-70'
+															? 'bg-muted'
+															: 'bg-secondary/20 border-dashed opacity-70'
 													}`}
 												>
 													<div className="flex items-center gap-3">
@@ -764,7 +764,7 @@ export default function SettingsPage() {
 															className={`flex items-center justify-center w-8 h-8 rounded-md border shadow-sm ${
 																secret.isActive
 																	? 'bg-white'
-																	: 'bg-bg-3 border-dashed opacity-60'
+																	: 'bg-secondary border-dashed opacity-60'
 															}`}
 														>
 															{getProviderLogo(
@@ -808,14 +808,14 @@ export default function SettingsPage() {
 																		' ',
 																	)}
 																</Badge>
-																<span className="text-xs text-text-tertiary">
+																<span className="text-xs text-muted-foreground">
 																	{
 																		secret.keyPreview
 																	}
 																</span>
 															</div>
 															{secret.description && (
-																<p className="text-xs text-text-tertiary mt-1">
+																<p className="text-xs text-muted-foreground mt-1">
 																	{
 																		secret.description
 																	}
@@ -910,9 +910,9 @@ export default function SettingsPage() {
 									if (byokSecrets.length === 0) {
 										return (
 											<div className="text-center py-6 border-2 border-dashed dark:border-bg-4 border-muted rounded-lg">
-												<Key className="h-8 w-8 text-text-tertiary mx-auto mb-2" />
+												<Key className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
 
-												<p className="text-sm text-text-tertiary">
+												<p className="text-sm text-muted-foreground">
 													Add your LLM keys to use your own billing
 												</p>
 											</div>
@@ -920,7 +920,7 @@ export default function SettingsPage() {
 									}
 
 									return (
-										<div className="rounded-lg bg-bg-3/50 p-4">
+										<div className="rounded-lg bg-secondary/50 p-4">
 											<div className="flex items-center justify-between mb-3">
 												<div className="flex items-center gap-2">
 													<div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -957,7 +957,7 @@ export default function SettingsPage() {
 															className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
 																secret.isActive
 																	? 'bg-white/50 dark:bg-gray-800/50'
-																	: 'bg-bg-3/20 border-dashed opacity-70'
+																	: 'bg-secondary/20 border-dashed opacity-70'
 															}`}
 														>
 															<div className="flex items-center gap-3">
@@ -965,7 +965,7 @@ export default function SettingsPage() {
 																	className={`flex items-center justify-center w-8 h-8 rounded-md border shadow-sm ${
 																		secret.isActive
 																			? 'bg-white'
-																			: 'bg-bg-3 border-dashed opacity-60'
+																			: 'bg-secondary border-dashed opacity-60'
 																	}`}
 																>
 																	{getProviderLogo(
@@ -982,7 +982,7 @@ export default function SettingsPage() {
 																		}
 																	</span>
 																	<div
-																		className={`text-xs text-text-tertiary ${secret.isActive ? '' : 'opacity-60'}`}
+																		className={`text-xs text-muted-foreground ${secret.isActive ? '' : 'opacity-60'}`}
 																	>
 																		{
 																			secret.keyPreview
@@ -1076,7 +1076,7 @@ export default function SettingsPage() {
 													);
 												})}
 											</div>
-											<p className="text-xs text-text-tertiary mt-3">
+											<p className="text-xs text-muted-foreground mt-3">
 												These keys are used
 												automatically when you select
 												BYOK mode in model
@@ -1247,7 +1247,7 @@ export default function SettingsPage() {
 															<span className="w-full border-t" />
 														</div>
 														<div className="relative flex justify-center text-xs uppercase">
-															<span className="bg-bg-3 px-2 text-text-tertiary">
+															<span className="bg-secondary px-2 text-muted-foreground">
 																Or
 															</span>
 														</div>
@@ -1272,7 +1272,7 @@ export default function SettingsPage() {
 																	Environment
 																	Variable
 																</div>
-																<p className="text-xs text-text-tertiary">
+																<p className="text-xs text-muted-foreground">
 																	Add any
 																	custom API
 																	key or
@@ -1301,7 +1301,7 @@ export default function SettingsPage() {
 
 													return (
 														<>
-															<div className="flex items-center gap-3 p-3 bg-bg-3/50 rounded-lg">
+															<div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
 																<span className="text-xl">
 																	{
 																		template.icon
@@ -1313,7 +1313,7 @@ export default function SettingsPage() {
 																			template.displayName
 																		}
 																	</h4>
-																	<p className="text-sm text-text-tertiary">
+																	<p className="text-sm text-muted-foreground">
 																		{
 																			template.description
 																		}
@@ -1354,14 +1354,14 @@ export default function SettingsPage() {
 																			template.envVarName
 																		}
 																		disabled
-																		className="bg-bg-3"
+																		className="bg-secondary"
 																	/>
-																	<p className="text-xs text-text-tertiary mt-1">
+																	<p className="text-xs text-muted-foreground mt-1">
 																		This
 																		will be
 																		available
 																		as{' '}
-																		<code className="bg-bg-3 px-1 rounded text-xs">
+																		<code className="bg-secondary px-1 rounded text-xs">
 																			{
 																				template.envVarName
 																			}
@@ -1517,7 +1517,7 @@ export default function SettingsPage() {
 															)
 														}
 													/>
-													<p className="text-xs text-text-tertiary mt-1">
+													<p className="text-xs text-muted-foreground mt-1">
 														Must be uppercase
 														letters, numbers, and
 														underscores only
@@ -1671,7 +1671,7 @@ export default function SettingsPage() {
 					{/* Security Section */}
 					<Card id="security">
 						<CardHeader variant="minimal">
-							<div className="flex items-center gap-3 border-b w-full py-3 text-text-primary">
+							<div className="flex items-center gap-3 border-b w-full py-3 text-foreground">
 								<Lock className="h-5 w-5" />
 								<div>
 									<CardTitle className="text-lg">
@@ -1688,7 +1688,7 @@ export default function SettingsPage() {
 								</h4>
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-3">
-										<div className="h-5 w-5 rounded-full bg-bg-3 flex items-center justify-center">
+										<div className="h-5 w-5 rounded-full bg-secondary flex items-center justify-center">
 											{user?.provider === 'google'
 												? '🇬'
 												: '🐙'}
@@ -1697,7 +1697,7 @@ export default function SettingsPage() {
 											<p className="text-sm font-medium capitalize">
 												{user?.provider}
 											</p>
-											<p className="text-sm text-text-tertiary">
+											<p className="text-sm text-muted-foreground">
 												{user?.email}
 											</p>
 										</div>
@@ -1713,8 +1713,8 @@ export default function SettingsPage() {
 								<h4 className="font-medium">Active Sessions</h4>
 								{activeSessions.loading ? (
 									<div className="flex items-center gap-3">
-										<Settings className="h-5 w-5 animate-spin text-text-tertiary" />
-										<span className="text-sm text-text-tertiary">
+										<Settings className="h-5 w-5 animate-spin text-muted-foreground" />
+										<span className="text-sm text-muted-foreground">
 											Loading active sessions...
 										</span>
 									</div>
@@ -1725,14 +1725,14 @@ export default function SettingsPage() {
 											className="flex items-center justify-between"
 										>
 											<div className="flex items-center gap-3">
-												<Smartphone className="h-5 w-5 text-text-tertiary" />
+												<Smartphone className="h-5 w-5 text-muted-foreground" />
 												<div>
 													<p className="font-medium text-sm">
 														{session.isCurrent
 															? 'Current Session'
 															: 'Other Session'}
 													</p>
-													<p className="text-sm text-text-tertiary">
+													<p className="text-sm text-muted-foreground">
 														{session.ipAddress} •{' '}
 														{new Date(
 															session.lastActivity,
@@ -1772,8 +1772,8 @@ export default function SettingsPage() {
 
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="font-medium text-text-primary">Delete Account</p>
-								<p className="text-sm text-text-tertiary">
+								<p className="font-medium text-foreground">Delete Account</p>
+								<p className="text-sm text-muted-foreground">
 									Permanently delete your account and all data
 								</p>
 							</div>

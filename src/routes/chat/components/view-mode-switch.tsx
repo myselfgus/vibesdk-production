@@ -25,7 +25,7 @@ export function ViewModeSwitch({
 						initial={{ opacity: 0, scale: 0.4 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0 }}
-						className="absolute z-50 top-10 left-0 bg-bg-2 text-text-primary text-xs px-2 py-1 rounded whitespace-nowrap animate-fade-in"
+						className="absolute z-50 top-10 left-0 bg-background text-foreground text-xs px-2 py-1 rounded whitespace-nowrap animate-fade-in"
 					>
 						You can view code anytime from here
 					</motion.div>
@@ -37,8 +37,8 @@ export function ViewModeSwitch({
 				className={clsx(
 					'p-1 flex items-center justify-between h-full rounded-md transition-colors',
 					view === 'preview'
-						? 'bg-bg-4 text-text-primary'
-						: 'text-text-50/70 hover:text-text-primary hover:bg-accent',
+						? 'bg-muted text-foreground'
+						: 'text-text-50/70 hover:text-foreground hover:bg-accent',
 				)}
 			>
 				<Eye className="size-4" />
@@ -48,8 +48,8 @@ export function ViewModeSwitch({
 				className={clsx(
 					'p-1 flex items-center justify-between h-full rounded-md transition-colors',
 					view === 'editor'
-						? 'bg-bg-4 text-text-primary'
-						: 'text-text-50/70 hover:text-text-primary hover:bg-accent',
+						? 'bg-muted text-foreground'
+						: 'text-text-50/70 hover:text-foreground hover:bg-accent',
 				)}
 			>
 				<Code className="size-4" />
@@ -60,8 +60,8 @@ export function ViewModeSwitch({
 					className={clsx(
 						'p-1 flex items-center justify-between h-full rounded-md transition-colors',
 						view === 'terminal'
-							? 'bg-bg-4 text-text-primary'
-							: 'text-text-50/70 hover:text-text-primary hover:bg-accent',
+							? 'bg-muted text-foreground'
+							: 'text-text-50/70 hover:text-foreground hover:bg-accent',
 					)}
 					title="Terminal"
 				>

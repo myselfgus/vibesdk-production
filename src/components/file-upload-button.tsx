@@ -67,7 +67,7 @@ export function FileUploadButton({
 					type="button"
 					onClick={handleClick}
 					disabled={disabled}
-					className={`p-1 rounded-md bg-transparent hover:bg-bg-3 text-text-secondary hover:text-text-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+					className={`p-1 rounded-md bg-transparent hover:bg-accent text-muted-foreground hover:text-foreground transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
 					aria-label="Upload files"
 					title="Upload files (Images, PDF, Code, Documents)"
 				>
@@ -104,7 +104,7 @@ export function FileUploadButton({
 					<button
 						type="button"
 						disabled={disabled}
-						className={`p-1 rounded-md bg-transparent hover:bg-bg-3 text-text-secondary hover:text-text-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+						className={`p-1 rounded-md bg-transparent hover:bg-accent text-muted-foreground hover:text-foreground transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
 						aria-label="Upload files or folder"
 						title="Upload files or folder"
 					>
