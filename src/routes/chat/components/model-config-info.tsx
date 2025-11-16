@@ -103,10 +103,13 @@ const getProviderInfo = (modelValue?: string) => {
   if (modelValue.includes('[openrouter]')) {
     return { name: 'OpenRouter', color: 'bg-pink-100 text-pink-800 dark:bg-pink-900/20 dark:text-pink-400' };
   }
-  if (modelValue.includes('openai/') || modelValue.includes('gpt') || modelValue.includes('o3') || modelValue.includes('o4')) {
+  if (modelValue.includes('xai/') || modelValue.includes('grok') || modelValue.includes('cloudflare-gateway/grok')) {
+    return { name: 'xAI Grok', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' };
+  }
+  if (modelValue.includes('openai/') || modelValue.includes('gpt') || modelValue.includes('o3') || modelValue.includes('o4') || modelValue.includes('cloudflare-gateway/openai')) {
     return { name: 'OpenAI', color: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' };
   }
-  if (modelValue.includes('anthropic/') || modelValue.includes('claude')) {
+  if (modelValue.includes('anthropic/') || modelValue.includes('claude') || modelValue.includes('cloudflare-gateway/anthropic')) {
     return { name: 'Anthropic', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400' };
   }
   if (modelValue.includes('google-ai-studio/') || modelValue.includes('gemini')) {

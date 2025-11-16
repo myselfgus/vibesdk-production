@@ -24,6 +24,9 @@ export enum AIModels {
 	GEMINI_2_5_FLASH_PREVIEW_05_20 = 'google-ai-studio/gemini-2.5-flash-preview-05-20',
 	GEMINI_2_5_PRO_PREVIEW_06_05 = 'google-ai-studio/gemini-2.5-pro-preview-06-05',
 
+	// Claude models - Primary choice
+	CLAUDE_SONNET_4_5 = 'anthropic/claude-sonnet-4-5-20250929',
+	CLAUDE_HAIKU_4_5 = 'anthropic/claude-haiku-4-5-20250929',
 	CLAUDE_3_5_SONNET_LATEST = 'anthropic/claude-3-5-sonnet-latest',
 	CLAUDE_3_7_SONNET_20250219 = 'anthropic/claude-3-7-sonnet-20250219',
 	CLAUDE_4_OPUS = 'anthropic/claude-opus-4-20250514',
@@ -36,6 +39,14 @@ export enum AIModels {
     OPENAI_5 = 'openai/gpt-5',
     OPENAI_5_MINI = 'openai/gpt-5-mini',
     OPENAI_OSS = 'openai/gpt-oss-120b',
+    OPENAI_CODEX = 'openai/code-davinci-002',
+    OPENAI_CODEX_001 = 'openai/code-davinci-001',
+
+	// xAI Grok models - Alternative choice
+	XAI_GROK_4_FAST = 'xai/grok-4-fast-reasoning',
+	XAI_GROK_4_STANDARD = 'xai/grok-4',
+	XAI_GROK_CODE_FAST = 'xai/grok-code-fast',
+	XAI_GROK_CODE_STANDARD = 'xai/grok-code',
 
     // OPENROUTER_QWEN_3_CODER = '[openrouter]qwen/qwen3-coder',
     // OPENROUTER_KIMI_2_5 = '[openrouter]moonshotai/kimi-k2',
@@ -45,12 +56,18 @@ export enum AIModels {
     CEREBRAS_QWEN_3_CODER = 'cerebras/qwen-3-coder-480b',
 
     // Cloudflare AI Gateway models (via custom gateway with multiple providers)
+    // Claude (Primary)
     CLOUDFLARE_GATEWAY_CLAUDE_SONNET_4_5 = 'cloudflare-gateway/anthropic/claude-sonnet-4-5-20250929',
     CLOUDFLARE_GATEWAY_CLAUDE_HAIKU_4_5 = 'cloudflare-gateway/anthropic/claude-haiku-4-5-20250929',
+    
+    // Grok (Alternative)
+    CLOUDFLARE_GATEWAY_GROK_4_FAST = 'cloudflare-gateway/grok/grok-4-fast-reasoning',
+    CLOUDFLARE_GATEWAY_GROK_4_STANDARD = 'cloudflare-gateway/grok/grok-4',
+    CLOUDFLARE_GATEWAY_GROK_CODE_FAST = 'cloudflare-gateway/grok/grok-code-fast',
+    
+    // OpenAI
     CLOUDFLARE_GATEWAY_GPT_5 = 'cloudflare-gateway/openai/gpt-5',
     CLOUDFLARE_GATEWAY_GPT_5_CODEX = 'cloudflare-gateway/openai/gpt-5-codex',
-    CLOUDFLARE_GATEWAY_GROK_4_FAST = 'cloudflare-gateway/grok/grok-4-fast-reasoning',
-    CLOUDFLARE_GATEWAY_GROK_CODE_FAST = 'cloudflare-gateway/grok/grok-code-fast',
 }
 
 export interface ModelConfig {
