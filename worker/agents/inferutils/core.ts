@@ -642,20 +642,37 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
         console.log(`Running inference with ${modelName} using structured output with ${format} format, reasoning effort: ${reasoning_effort}, max tokens: ${maxTokens}, temperature: ${temperature}, baseURL: ${baseURL}`);
 
         const toolsOpts = tools ? { tools, tool_choice: 'auto' as const } : {};
+
+        // Prepare completion options based on model provider
+        const isClaudeModel = modelName.includes('claude');
+        const completionOptions: Record<string, any> = {
+            ...schemaObj,
+            ...toolsOpts,
+            model: modelName,
+            messages: messagesToPass as OpenAI.ChatCompletionMessageParam[],
+            max_completion_tokens: maxTokens || 150000,
+            stream: stream ? true : false,
+            temperature,
+        };
+
+        // Add provider-specific options
+        if (isClaudeModel) {
+            // For Claude models, use extra_body for extended thinking
+            if (extraBody && Object.keys(extraBody).length > 0) {
+                completionOptions.extra_body = extraBody.extra_body;
+            }
+            // Claude doesn't support reasoning_effort parameter - it uses extra_body.thinking instead
+        } else {
+            // For OpenAI and other models, use reasoning_effort
+            if (reasoning_effort) {
+                completionOptions.reasoning_effort = reasoning_effort;
+            }
+        }
+
         let response: OpenAI.ChatCompletion | OpenAI.ChatCompletionChunk | Stream<OpenAI.ChatCompletionChunk>;
         try {
             // Call OpenAI API with proper structured output format
-            response = await client.chat.completions.create({
-                ...schemaObj,
-                ...extraBody,
-                ...toolsOpts,
-                model: modelName,
-                messages: messagesToPass as OpenAI.ChatCompletionMessageParam[],
-                max_completion_tokens: maxTokens || 150000,
-                stream: stream ? true : false,
-                reasoning_effort,
-                temperature,
-            }, {
+            response = await client.chat.completions.create(completionOptions as any, {
                 signal: abortSignal,
                 headers: {
                     "cf-aig-metadata": JSON.stringify({
