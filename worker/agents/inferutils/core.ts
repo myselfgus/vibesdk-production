@@ -303,6 +303,9 @@ export async function getConfigurationForModel(
             return {
                 baseURL: 'https://api.anthropic.com/v1',
                 apiKey: await getApiKey('anthropic', env, userId),
+                defaultHeaders: {
+                    'anthropic-version': '2023-06-01',
+                },
             };
         } else if (provider === 'xai' || provider === 'grok') {
             return {
@@ -320,6 +323,9 @@ export async function getConfigurationForModel(
         return {
             baseURL: 'https://api.anthropic.com/v1',
             apiKey: await getApiKey('anthropic', env, userId),
+            defaultHeaders: {
+                'anthropic-version': '2023-06-01',
+            },
         };
     }
     
