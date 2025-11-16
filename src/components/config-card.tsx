@@ -25,7 +25,7 @@ const getModelDisplayName = (modelValue?: string) => {
 
 // Helper function to get provider badge info
 const getProviderInfo = (modelValue?: string) => {
-  if (!modelValue) return { name: 'Default', color: 'bg-bg-3 text-text-tertiary' };
+  if (!modelValue) return { name: 'Default', color: 'bg-secondary text-muted-foreground' };
   
   // Check specific prefixes first to avoid incorrect matches
   if (modelValue.includes('cerebras/')) {
@@ -92,18 +92,18 @@ export function ConfigCard({
   const reasoningEffort = userConfig?.reasoning_effort ?? defaultConfig?.reasoning_effort;
 
   return (
-    <Card className={`h-full min-h-[280px] min-w-[280px] flex flex-col overflow-hidden transition-all dark:!bg-bg-3 !bg-bg-3 hover:shadow-md !border-bg-1/40`}>
+    <Card className={`h-full min-h-[280px] min-w-[280px] flex flex-col overflow-hidden transition-all dark:!bg-secondary !bg-secondary hover:shadow-md !border-bg-1/40`}>
       <CardHeader className="pb- flex-shrink-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-start gap-2 min-w-0 flex-1 overflow-hidden">
-            <div className="p-1.5 rounded-md bg-bg-3 shrink-0">
+            <div className="p-1.5 rounded-md bg-secondary shrink-0">
               <AgentIcon className="h-4 w-4" />
             </div>
             <div className="min-w-0 flex-1 overflow-hidden">
               <h5 className="font-medium text-md leading-tight mb-1 break-words" title={agent.name}>
                 {agent.name}
               </h5>
-              <p className="text-xs text-text-tertiary line-clamp-3 leading-tight overflow-hidden break-words" title={agent.description}>
+              <p className="text-xs text-muted-foreground line-clamp-3 leading-tight overflow-hidden break-words" title={agent.description}>
                 {agent.description}
               </p>
             </div>
@@ -192,7 +192,7 @@ export function ConfigCard({
             size="sm"
             variant="outline"
             onClick={onConfigure}
-            className="flex-1 h-8 text-xs font-medium min-w-0 dark:bg-bg-2"
+            className="flex-1 h-8 text-xs font-medium min-w-0 dark:bg-background"
           >
             <Settings className="h-3 w-3 mr-1" />
             <span className="truncate">Configure</span>
@@ -229,7 +229,7 @@ export function ConfigCard({
                     size="sm"
                     variant="ghost"
                     onClick={onReset}
-                    className="h-8 w-8 p-0 text-text-tertiary shrink-0"
+                    className="h-8 w-8 p-0 text-muted-foreground shrink-0"
                   >
                     <RotateCcw className="h-3 w-3" />
                   </Button>

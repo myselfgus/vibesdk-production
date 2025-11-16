@@ -358,7 +358,7 @@ export const PreviewIframe = forwardRef<HTMLIFrameElement, PreviewIframeProps>(
 			const delaySeconds = Math.ceil(delay / 1000);
 
 			return (
-				<div className={`${className} relative flex flex-col items-center justify-center bg-bg-3 border border-text/10 rounded-lg`}>
+				<div className={`${className} relative flex flex-col items-center justify-center bg-secondary border border-text/10 rounded-lg`}>
                     {loadState.status === 'postload' && loadState.loadedSrc && (
                         <iframe
                             ref={ref}
@@ -378,10 +378,10 @@ export const PreviewIframe = forwardRef<HTMLIFrameElement, PreviewIframeProps>(
                     )}
 					<div className="text-center p-8 max-w-md">
 						<RefreshCw className="size-8 text-accent animate-spin mx-auto mb-4" />
-						<h3 className="text-lg font-medium text-text-primary mb-2">
+						<h3 className="text-lg font-medium text-foreground mb-2">
 							Loading Preview
 						</h3>
-						<p className="text-text-primary/70 text-sm mb-4">
+						<p className="text-foreground/70 text-sm mb-4">
 							{loadState.attempt === 0
 								? 'Checking if your deployed preview is ready...'
 								: `Preview not ready yet. Retrying in ${delaySeconds}s... (attempt ${loadState.attempt}/${MAX_RETRIES})`
@@ -392,7 +392,7 @@ export const PreviewIframe = forwardRef<HTMLIFrameElement, PreviewIframeProps>(
 								Auto-redeployment triggered to refresh the preview
 							</p>
 						)}
-						<div className="text-xs text-text-primary/50 mt-2">
+						<div className="text-xs text-foreground/50 mt-2">
 							Preview URLs may take a moment to become available after deployment
 						</div>
 					</div>
@@ -402,13 +402,13 @@ export const PreviewIframe = forwardRef<HTMLIFrameElement, PreviewIframeProps>(
 
 		// Error state - after max retries
 		return (
-			<div className={`${className} flex flex-col items-center justify-center bg-bg-3 border border-text/10 rounded-lg`}>
+			<div className={`${className} flex flex-col items-center justify-center bg-secondary border border-text/10 rounded-lg`}>
 				<div className="text-center p-8 max-w-md">
 					<AlertCircle className="size-8 text-orange-500 mx-auto mb-4" />
-					<h3 className="text-lg font-medium text-text-primary mb-2">
+					<h3 className="text-lg font-medium text-foreground mb-2">
 						Preview Not Available
 					</h3>
-					<p className="text-text-primary/70 text-sm mb-6">
+					<p className="text-foreground/70 text-sm mb-6">
 						{loadState.errorMessage || 'The preview failed to load after multiple attempts.'}
 					</p>
 					<div className="space-y-3">
@@ -419,7 +419,7 @@ export const PreviewIframe = forwardRef<HTMLIFrameElement, PreviewIframeProps>(
 							<RefreshCw className="size-4" />
 							Try Again
 						</button>
-						<p className="text-xs text-text-primary/60">
+						<p className="text-xs text-foreground/60">
 							If the issue persists, please describe the problem in chat so I can help diagnose and fix it.
 						</p>
 					</div>

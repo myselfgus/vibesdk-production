@@ -495,10 +495,10 @@ export default function AppView() {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-bg-3 flex items-center justify-center">
+			<div className="min-h-screen bg-secondary flex items-center justify-center">
 				<div className="text-center">
-					<Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-text-tertiary" />
-					<p className="text-text-tertiary">Loading app...</p>
+					<Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
+					<p className="text-muted-foreground">Loading app...</p>
 				</div>
 			</div>
 		);
@@ -506,14 +506,14 @@ export default function AppView() {
 
 	if (error || !app) {
 		return (
-			<div className="min-h-screen bg-bg-3 flex items-center justify-center">
+			<div className="min-h-screen bg-secondary flex items-center justify-center">
 				<Card className="max-w-md">
 					<CardContent className="pt-6">
 						<div className="text-center">
 							<h2 className="text-xl font-semibold mb-2">
 								App not found
 							</h2>
-							<p className="text-text-tertiary mb-4">
+							<p className="text-muted-foreground mb-4">
 								{error ||
 									"The app you're looking for doesn't exist."}
 							</p>
@@ -533,12 +533,12 @@ export default function AppView() {
 	const createdDate = app.createdAt ? new Date(app.createdAt) : new Date();
 
 	return (
-		<div className="min-h-screen bg-bg-3 flex flex-col">
+		<div className="min-h-screen bg-secondary flex flex-col">
 			<div className="container mx-auto px-4 pb-6 space-y-6 flex flex-col flex-1">
 				{/* Back button */}
 				<button
 					onClick={() => history.back()}
-					className="gap-2 flex items-center text-text-primary/80"
+					className="gap-2 flex items-center text-foreground/80"
 				>
 					<ChevronLeft className="h-4 w-4" />
 					Back
@@ -549,7 +549,7 @@ export default function AppView() {
 					<div className="flex-1">
 						<div className="flex rounded w-fit pb-3 pt-2 flex-col mb-6">
 							<div className="flex items-center gap-3 mb-2">
-								<h1 className="text-4xl font-semibold tracking-tight text-text-primary">
+								<h1 className="text-4xl font-semibold tracking-tight text-foreground">
 									{app.title}
 								</h1>
 
@@ -564,15 +564,15 @@ export default function AppView() {
 											size="sm"
 											onClick={handleToggleVisibility}
 											disabled={isUpdatingVisibility}
-											className="h-6 w-6 p-0 hover:bg-bg-3/50 -ml-1.5 !mr-1.5"
+											className="h-6 w-6 p-0 hover:bg-secondary/50 -ml-1.5 !mr-1.5"
 											title={`Make ${app.visibility === 'private' ? 'public' : 'private'}`}
 										>
 											{isUpdatingVisibility ? (
-												<Loader2 className="h-3 w-3 animate-spin text-text-primary" />
+												<Loader2 className="h-3 w-3 animate-spin text-foreground" />
 											) : app.visibility === 'private' ? (
-												<Unlock className="h-3 w-3 text-text-primary" />
+												<Unlock className="h-3 w-3 text-foreground" />
 											) : (
-												<Lock className="h-3 w-3 text-text-primary" />
+												<Lock className="h-3 w-3 text-foreground" />
 											)}
 										</Button>
 									)}
@@ -584,7 +584,7 @@ export default function AppView() {
 									size="sm"
 									onClick={handleFavorite}
 									className={cn(
-										'gap-2 text-text-primary',
+										'gap-2 text-foreground',
 									)}
 								>
 									<Bookmark
@@ -600,7 +600,7 @@ export default function AppView() {
 									variant="outline"
 									size="sm"
 									onClick={handleStar}
-									className={cn('gap-2 text-text-primary')}
+									className={cn('gap-2 text-foreground')}
 								>
 									<Star
 										className={cn(
@@ -616,7 +616,7 @@ export default function AppView() {
 									variant="outline"
 									size="sm"
 									onClick={() => setIsGitCloneModalOpen(true)}
-									className="gap-2 text-text-primary"
+									className="gap-2 text-foreground"
 								>
 									<GitBranch className="h-4 w-4" />
 									Git Clone
@@ -636,7 +636,7 @@ export default function AppView() {
 												);
 											}
 										}}
-										className={cn('gap-2 text-text-primary')}
+										className={cn('gap-2 text-foreground')}
 										title={`View on GitHub (${app.githubRepositoryVisibility || 'public'})`}
 									>
 										<Github className="h-4 w-4" />
@@ -693,12 +693,12 @@ export default function AppView() {
 						</div>
 
 						{app.description && (
-							<p className="text-text-primary my-3 max-w-4xl">
+							<p className="text-foreground my-3 max-w-4xl">
 								{app.description}
 							</p>
 						)}
 
-						<div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+						<div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 							{app.user && (
 								<div className="flex items-center gap-2">
 									<User className="h-4 w-4" />
@@ -734,10 +734,10 @@ export default function AppView() {
 					{/* Tab switcher and Git Clone inline */}
 					<div className="flex items-center gap-4">
 						{/* Using proper TabsList and TabsTrigger components */}
-						<TabsList className="inline-flex h-auto w-fit items-center gap-0.5 bg-bg-2 dark:bg-bg-1 rounded-md p-0.5 border border-border-primary/30">
+						<TabsList className="inline-flex h-auto w-fit items-center gap-0.5 bg-background dark:bg-bg-1 rounded-md p-0.5 border border-border/30">
 						<TabsTrigger 
 							value="preview" 
-							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-bg-4 dark:data-[state=active]:bg-bg-3 data-[state=active]:text-text-primary data-[state=active]:shadow-sm"
+							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-muted dark:data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-sm"
 						>
 							<Eye className={cn(
 								"h-3.5 w-3.5 mr-1.5",
@@ -747,7 +747,7 @@ export default function AppView() {
 						</TabsTrigger>
 						<TabsTrigger 
 							value="code" 
-							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-bg-4 dark:data-[state=active]:bg-bg-3 data-[state=active]:text-text-primary data-[state=active]:shadow-sm"
+							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-muted dark:data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-sm"
 						>
 							<Code2 className={cn(
 								"h-3.5 w-3.5 mr-1.5",
@@ -757,7 +757,7 @@ export default function AppView() {
 						</TabsTrigger>
 						<TabsTrigger 
 							value="prompt" 
-							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-bg-4 dark:data-[state=active]:bg-bg-3 data-[state=active]:text-text-primary data-[state=active]:shadow-sm"
+							className="px-3 py-1.5 rounded text-xs font-medium data-[state=active]:bg-muted dark:data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:shadow-sm"
 						>
 							<MessageSquare className={cn(
 								"h-3.5 w-3.5 mr-1.5",
@@ -930,10 +930,10 @@ export default function AppView() {
 							</CardHeader>
 							<CardContent className="p-0 flex-1 flex flex-col overflow-hidden">
 								{files.length > 0 ? (
-									<div className="h-[450px] relative bg-bg-3 overflow-hidden">
+									<div className="h-[450px] relative bg-secondary overflow-hidden">
 										<div className="h-full flex">
-											<div className="w-full max-w-[250px] bg-bg-3 border-r border-text/10 h-full overflow-y-auto">
-												<div className="p-2 px-3 text-sm flex items-center gap-1 text-text-primary/50 font-medium border-b bg-bg-3">
+											<div className="w-full max-w-[250px] bg-secondary border-r border-text/10 h-full overflow-y-auto">
+												<div className="p-2 px-3 text-sm flex items-center gap-1 text-foreground/50 font-medium border-b bg-secondary">
 													<Code2 className="size-4" />
 													Files
 												</div>
@@ -951,7 +951,7 @@ export default function AppView() {
 																activeFile?.filePath ===
 																	file.filePath
 																	? 'bg-blue-100 text-blue-900 border-r-2 border-blue-500'
-																	: 'hover:bg-bg-3 text-text-tertiary hover:text-text-primary',
+																	: 'hover:bg-secondary text-muted-foreground hover:text-foreground',
 															)}
 														>
 															<Code2 className="h-4 w-4 flex-shrink-0" />
@@ -966,7 +966,7 @@ export default function AppView() {
 											<div className="flex-1 flex flex-col">
 												{activeFile ? (
 													<>
-														<div className="flex items-center justify-between p-3 border-b bg-bg-3">
+														<div className="flex items-center justify-between p-3 border-b bg-secondary">
 															<div className="flex items-center gap-2 flex-1">
 																<Code2 className="h-4 w-4" />
 																<span className="text-sm font-mono">
@@ -975,7 +975,7 @@ export default function AppView() {
 																	}
 																</span>
 																{activeFile.explanation && (
-																	<span className="text-xs text-text-tertiary ml-3">
+																	<span className="text-xs text-muted-foreground ml-3">
 																		{
 																			activeFile.explanation
 																		}
@@ -1008,7 +1008,7 @@ export default function AppView() {
 													</>
 												) : (
 													<div className="flex-1 flex items-center justify-center">
-														<p className="text-text-tertiary">
+														<p className="text-muted-foreground">
 															Select a file to
 															view
 														</p>
@@ -1044,7 +1044,7 @@ export default function AppView() {
 							</CardHeader>
 							<CardContent>
 								{app?.agentSummary?.query || app?.originalPrompt ? (
-									<div className="bg-bg-2 rounded-lg p-6 border border-border-primary">
+									<div className="bg-background rounded-lg p-6 border border-border">
 										<div className="flex items-start gap-3">
 											<div className="flex-shrink-0 mt-1">
 												<div className="rounded-full bg-accent/10 p-2">
@@ -1052,8 +1052,8 @@ export default function AppView() {
 												</div>
 											</div>
 											<div className="flex-1">
-												<p className="text-sm text-text-secondary mb-2 font-medium">Prompt</p>
-												<p className="text-text-primary whitespace-pre-wrap">
+												<p className="text-sm text-muted-foreground mb-2 font-medium">Prompt</p>
+												<p className="text-foreground whitespace-pre-wrap">
 													{app?.agentSummary?.query || app?.originalPrompt}
 												</p>
 											</div>
@@ -1079,7 +1079,7 @@ export default function AppView() {
 										</div>
 									</div>
 								) : (
-									<div className="flex items-center justify-center py-12 text-text-tertiary">
+									<div className="flex items-center justify-center py-12 text-muted-foreground">
 										<MessageSquare className="h-8 w-8 mr-3" />
 										<p>
 											{app?.agentSummary === null 

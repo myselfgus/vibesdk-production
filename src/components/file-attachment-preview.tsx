@@ -63,7 +63,7 @@ export function FileAttachmentPreview({
 							transition={{ duration: 0.2 }}
 							className={`relative group ${
 								compact ? 'max-w-[160px]' : 'max-w-[200px]'
-							} rounded-lg overflow-hidden border border-border-primary bg-bg-3`}
+							} rounded-lg overflow-hidden border border-border bg-secondary`}
 						>
 							{isImage ? (
 								// Image preview with thumbnail
@@ -77,7 +77,7 @@ export function FileAttachmentPreview({
 										<button
 											type="button"
 											onClick={() => onRemove(file.id)}
-											className="absolute top-1 right-1 p-0.5 rounded-full bg-bg-1/90 hover:bg-bg-1 text-text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+											className="absolute top-1 right-1 p-0.5 rounded-full bg-bg-1/90 hover:bg-bg-1 text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
 											aria-label={`Remove ${file.filename}`}
 										>
 											<X className="size-3" />
@@ -85,7 +85,7 @@ export function FileAttachmentPreview({
 									)}
 									{!compact && (
 										<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-bg-1/90 to-transparent p-1">
-											<p className="text-[10px] text-text-secondary truncate">
+											<p className="text-[10px] text-muted-foreground truncate">
 												{file.filename}
 											</p>
 										</div>
@@ -94,14 +94,14 @@ export function FileAttachmentPreview({
 							) : (
 								// Non-image file preview with icon and details
 								<div className="flex items-center gap-2 p-2">
-									<div className="text-text-secondary">
+									<div className="text-muted-foreground">
 										{getFileIcon(file)}
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="text-xs font-medium text-text-primary truncate">
+										<p className="text-xs font-medium text-foreground truncate">
 											{file.relativePath || file.filename}
 										</p>
-										<div className="flex items-center gap-1.5 text-[10px] text-text-secondary">
+										<div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
 											<span>{getFileTypeName(file.mimeType)}</span>
 											<span>•</span>
 											<span>{formatFileSize(file.size)}</span>
@@ -111,7 +111,7 @@ export function FileAttachmentPreview({
 										<button
 											type="button"
 											onClick={() => onRemove(file.id)}
-											className="p-0.5 rounded-full hover:bg-bg-1 text-text-secondary hover:text-text-primary transition-colors"
+											className="p-0.5 rounded-full hover:bg-bg-1 text-muted-foreground hover:text-foreground transition-colors"
 											aria-label={`Remove ${file.filename}`}
 										>
 											<X className="size-3.5" />

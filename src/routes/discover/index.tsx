@@ -65,7 +65,7 @@ export default function DiscoverPage() {
 						<h1 className="text-6xl font-bold mb-3 font-[departureMono] text-accent">
 							DISCOVER
 						</h1>
-						<p className="text-text-tertiary text-lg">
+						<p className="text-muted-foreground text-lg">
 							Explore apps built by the community
 						</p>
 					</div>

@@ -66,7 +66,7 @@ transition={{ duration: 0.2 }}
 className="my-4"
 >
 <div className={clsx(
-"rounded-lg border overflow-hidden bg-bg-2",
+"rounded-lg border overflow-hidden bg-background",
 isActive && "border-accent/30",
 !isActive && hasError && "border-red-500/30",
 !isActive && !hasError && "border-green-500/30"
@@ -76,8 +76,8 @@ isActive && "border-accent/30",
 onClick={() => setIsExpanded(!isExpanded)}
 className={clsx(
 "w-full px-4 py-3 flex items-center justify-between",
-"hover:bg-bg-3/50 transition-colors",
-isExpanded && "border-b border-border-primary/30"
+"hover:bg-secondary/50 transition-colors",
+isExpanded && "border-b border-border/30"
 )}
 >
 <div className="flex items-center gap-2.5 flex-1 min-w-0">
@@ -103,14 +103,14 @@ hasError && !isActive && "text-red-500",
 </span>
 
 {/* Timer and tool count */}
-<div className="flex items-center gap-2 ml-auto text-xs text-text-tertiary">
+<div className="flex items-center gap-2 ml-auto text-xs text-muted-foreground">
 {isActive && (
 <span className="font-mono tabular-nums">
 {formatElapsedTime(elapsedSeconds)}
 </span>
 )}
 {toolCallCount > 0 && (
-<span className="px-1.5 py-0.5 rounded bg-bg-3/50 font-medium">
+<span className="px-1.5 py-0.5 rounded bg-secondary/50 font-medium">
 {toolCallCount}
 </span>
 )}
@@ -123,7 +123,7 @@ animate={{ rotate: isExpanded ? 180 : 0 }}
 transition={{ duration: 0.2 }}
 className="ml-2"
 >
-<ChevronDown className="size-4 text-text-tertiary" />
+<ChevronDown className="size-4 text-muted-foreground" />
 </motion.div>
 </button>
 
@@ -177,13 +177,13 @@ exit={{ opacity: 0, y: 10 }}
 onClick={scrollToBottom}
 className={clsx(
 "absolute bottom-3 right-3 size-8 rounded-md",
-"bg-bg-3 hover:bg-bg-3/80 border border-border-primary/30",
+"bg-secondary hover:bg-secondary/80 border border-border/30",
 "flex items-center justify-center",
 "transition-colors"
 )}
 title="Scroll to bottom"
 >
-<ArrowDown className="size-4 text-text-secondary" />
+<ArrowDown className="size-4 text-muted-foreground" />
 </motion.button>
 )}
 </AnimatePresence>

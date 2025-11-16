@@ -100,7 +100,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-3">
+    <div className="min-h-screen bg-secondary">
       {/* Profile Header */}
       <div className="container mx-auto px-4 py-8">
         <div className="pb-8">
@@ -128,7 +128,7 @@ export default function Profile() {
                   )}
                 </div>
               </div>
-              <p className="text-text-tertiary mb-1">{user?.email}</p>
+              <p className="text-muted-foreground mb-1">{user?.email}</p>
               {user?.bio && <p className="text-sm max-w-2xl">{user.bio}</p>}
             </div>
 
@@ -164,7 +164,7 @@ export default function Profile() {
       <div className="container mx-auto px-4 py-8">
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-bg-4/50">
+          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-muted/50">
             <CardContent className="pt-6 relative overflow-hidden">
               <Code2 className="h-32 w-32 text-blue-500 absolute -top-10 -left-6 opacity-10" />
               <p className="text-6xl font-semibold text-gray-700">{statsLoading ? '-' : stats?.appCount}</p>
@@ -172,7 +172,7 @@ export default function Profile() {
             </CardContent>
           </Card>
           
-          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-bg-4/50">
+          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-muted/50">
             <CardContent className="pt-6 relative overflow-hidden">
               <Globe className="h-32 w-32 text-green-500 absolute -top-10 -left-6 opacity-20" />
               <p className="text-6xl font-semibold text-gray-700">{statsLoading ? '-' : stats?.publicAppCount}</p>
@@ -180,7 +180,7 @@ export default function Profile() {
             </CardContent>
           </Card>
           
-          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-bg-4/50">
+          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-muted/50">
             <CardContent className="pt-6 relative overflow-hidden">
               <Activity className="h-32 w-32 text-purple-500 absolute -top-10 -left-6 opacity-10" />
               <p className="text-6xl font-semibold text-gray-700">{statsLoading ? '-' : stats?.totalViewsReceived}</p>
@@ -188,7 +188,7 @@ export default function Profile() {
             </CardContent>
           </Card>
           
-          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-bg-4/50">
+          <Card className="text-center hover:shadow-lg hover:scale-[1.02] transition-all dark:bg-muted/50">
             <CardContent className="pt-6 relative overflow-hidden">
               <Star className="h-32 w-32 text-yellow-500 absolute -top-10 -left-6 opacity-20" />
               <p className="text-6xl font-semibold text-gray-700">{statsLoading ? '-' : stats?.totalLikesReceived}</p>
@@ -207,7 +207,7 @@ export default function Profile() {
           </TabsList>
 
           <TabsContent value="about" className="space-y-6">
-            <Card className="dark:bg-bg-4/50 max-w-xl">
+            <Card className="dark:bg-muted/50 max-w-xl">
               <CardHeader className='border-b'>
                 <CardTitle>Profile Information</CardTitle>
               </CardHeader>
@@ -222,7 +222,7 @@ export default function Profile() {
                         onChange={(e) => setProfileData({ ...profileData, displayName: e.target.value })}
                       />
                     ) : (
-                      <p className="text-sm text-text-tertiary">{user?.displayName}</p>
+                      <p className="text-sm text-muted-foreground">{user?.displayName}</p>
                     )}
                   </div>
 
@@ -236,13 +236,13 @@ export default function Profile() {
                         placeholder="@username"
                       />
                     ) : (
-                      <p className="text-sm text-text-tertiary">{user?.username || 'Not set'}</p>
+                      <p className="text-sm text-muted-foreground">{user?.username || 'Not set'}</p>
                     )}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <p className="text-sm text-text-tertiary flex items-center gap-2">
+                    <p className="text-sm text-muted-foreground flex items-center gap-2">
                       <Mail className="h-4 w-4" />
                       {user?.email}
                     </p>
@@ -250,7 +250,7 @@ export default function Profile() {
 
                   <div className="space-y-2">
                     <Label htmlFor="joined">Member Since</Label>
-                    <p className="text-sm text-text-tertiary flex items-center gap-2">
+                    <p className="text-sm text-muted-foreground flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       {user?.createdAt ? format(new Date(user.createdAt), 'MMMM d, yyyy') : 'Unknown'}
                     </p>
@@ -268,7 +268,7 @@ export default function Profile() {
                       rows={4}
                     />
                   ) : (
-                    <p className="text-sm text-text-tertiary">
+                    <p className="text-sm text-muted-foreground">
                       {user?.bio || 'No bio provided'}
                     </p>
                   )}
@@ -278,7 +278,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="apps">
-            <Card className="dark:bg-bg-4/50 max-w-xl">
+            <Card className="dark:bg-muted/50 max-w-xl">
               <CardHeader className='border-b'>
                 <CardTitle>Recent Applications</CardTitle>
               </CardHeader>
@@ -286,8 +286,8 @@ export default function Profile() {
                 {appsLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="text-center">
-                      <Activity className="h-8 w-8 mx-auto mb-2 text-text-tertiary animate-pulse" />
-                      <p className="text-sm text-text-tertiary">Loading apps...</p>
+                      <Activity className="h-8 w-8 mx-auto mb-2 text-muted-foreground animate-pulse" />
+                      <p className="text-sm text-muted-foreground">Loading apps...</p>
                     </div>
                   </div>
                 ) : recentApps && recentApps.length > 0 ? (
@@ -295,16 +295,16 @@ export default function Profile() {
                     {recentApps.slice(0, 5).map((app) => (
                       <div 
                         key={app.id}
-                        className="flex items-center justify-between p-4 rounded-lg border hover:bg-bg-3/50 transition-colors cursor-pointer"
+                        className="flex items-center justify-between p-4 rounded-lg border hover:bg-secondary/50 transition-colors cursor-pointer"
                         onClick={() => navigate(`/app/${app.id}`)}
                       >
                         <div className="flex items-center gap-4">
-                          <div className="h-12 w-12 rounded-lg bg-bg-3 flex items-center justify-center">
+                          <div className="h-12 w-12 rounded-lg bg-secondary flex items-center justify-center">
                             <Code2 className="h-6 w-6" />
                           </div>
                           <div>
                             <h4 className="font-medium">{app.title}</h4>
-                            <div className="flex items-center gap-3 mt-1 text-xs text-text-tertiary">
+                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                               <Badge variant="secondary" className="text-xs">
                                 {app.framework}
                               </Badge>
@@ -322,8 +322,8 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8">
-                    <Code2 className="h-12 w-12 text-text-tertiary mb-4" />
-                    <p className="text-text-tertiary">No apps created yet</p>
+                    <Code2 className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">No apps created yet</p>
                     <Button className="mt-4" onClick={() => navigate('/chat')}>
                       Create Your First App
                     </Button>
@@ -334,7 +334,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="achievements">
-            <Card className="dark:bg-bg-4/50 max-w-xl">
+            <Card className="dark:bg-muted/50 max-w-xl">
               <CardHeader>
                 <CardTitle>Achievements</CardTitle>
               </CardHeader>
@@ -342,8 +342,8 @@ export default function Profile() {
                 {statsLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="text-center">
-                      <Trophy className="h-8 w-8 mx-auto mb-2 text-text-tertiary animate-pulse" />
-                      <p className="text-sm text-text-tertiary">Loading achievements...</p>
+                      <Trophy className="h-8 w-8 mx-auto mb-2 text-muted-foreground animate-pulse" />
+                      <p className="text-sm text-muted-foreground">Loading achievements...</p>
                     </div>
                   </div>
                 ) : achievements && achievements.length > 0 ? (
@@ -352,12 +352,12 @@ export default function Profile() {
                       return (
                         <div key={index} className="p-4 rounded-lg border hover:shadow-md transition-shadow">
                           <div className="flex items-start gap-4">
-                            <div className="p-3 rounded-lg bg-bg-3 text-text-tertiary">
+                            <div className="p-3 rounded-lg bg-secondary text-muted-foreground">
                               <Trophy className="h-6 w-6" />
                             </div>
                             <div className="flex-1">
                               <h4 className="font-medium">{achievement}</h4>
-                              <p className="text-sm text-text-tertiary mt-1">
+                              <p className="text-sm text-muted-foreground mt-1">
                                 Achievement unlocked!
                               </p>
                             </div>
@@ -368,9 +368,9 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8">
-                    <Trophy className="h-12 w-12 text-text-tertiary mb-4" />
-                    <p className="text-text-tertiary">No achievements yet</p>
-                    <p className="text-sm text-text-tertiary mt-2">Start creating apps to unlock achievements!</p>
+                    <Trophy className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">No achievements yet</p>
+                    <p className="text-sm text-muted-foreground mt-2">Start creating apps to unlock achievements!</p>
                   </div>
                 )}
               </CardContent>
@@ -378,7 +378,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="activity">
-            <Card className="dark:bg-bg-4/50 max-w-xl">
+            <Card className="dark:bg-muted/50 max-w-xl">
               <CardHeader>
                 <CardTitle>Activity Timeline</CardTitle>
               </CardHeader>
@@ -386,8 +386,8 @@ export default function Profile() {
                 {activityLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="text-center">
-                      <Activity className="h-8 w-8 mx-auto mb-2 text-text-tertiary animate-pulse" />
-                      <p className="text-sm text-text-tertiary">Loading activity...</p>
+                      <Activity className="h-8 w-8 mx-auto mb-2 text-muted-foreground animate-pulse" />
+                      <p className="text-sm text-muted-foreground">Loading activity...</p>
                     </div>
                   </div>
                 ) : activities && activities.length > 0 ? (
@@ -412,9 +412,9 @@ export default function Profile() {
                               {activity.type === 'favorited' && 'Favorited'}
                             </span>
                             {' '}
-                            <span className="text-text-tertiary">{activity.title}</span>
+                            <span className="text-muted-foreground">{activity.title}</span>
                           </p>
-                          <p className="text-xs text-text-tertiary mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             {activity.timestamp ? format(new Date(activity.timestamp), 'MMM d, yyyy h:mm a') : 'Recently'}
                           </p>
                         </div>
@@ -423,8 +423,8 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8">
-                    <Activity className="h-12 w-12 text-text-tertiary mb-4" />
-                    <p className="text-text-tertiary">No recent activity</p>
+                    <Activity className="h-12 w-12 text-muted-foreground mb-4" />
+                    <p className="text-muted-foreground">No recent activity</p>
                   </div>
                 )}
               </CardContent>

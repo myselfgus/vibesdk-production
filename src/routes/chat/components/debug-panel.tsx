@@ -537,15 +537,15 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
       {/* Debug Panel */}
       <div
         ref={panelRef}
-        className={`fixed right-0 top-0 h-full bg-bg-3 dark:bg-bg-4 shadow-2xl border-l border-border-primary z-[60] transform transition-all duration-300 ease-in-out flex flex-col ${
+        className={`fixed right-0 top-0 h-full bg-secondary dark:bg-muted shadow-2xl border-l border-border z-[60] transform transition-all duration-300 ease-in-out flex flex-col ${
           isMaximized ? 'w-[80vw]' : 'w-[600px]'
         } ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border-primary bg-gradient-to-r from-muted to-accent">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-muted to-accent">
           <div className="flex items-center gap-2">
-            <Bug className="w-5 h-5 text-text-primary" />
-            <h3 className="font-semibold text-text-primary">Debug Console</h3>
+            <Bug className="w-5 h-5 text-foreground" />
+            <h3 className="font-semibold text-foreground">Debug Console</h3>
             <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
               {filteredMessages.length}/{messages.length}
             </span>
@@ -558,7 +558,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
           </div>
           <div className="flex items-center gap-2 flex-wrap justify-end">
             {/* View Mode Toggle */}
-            <div className="flex bg-bg-3 dark:bg-zinc-800 rounded p-0.5">
+            <div className="flex bg-secondary dark:bg-zinc-800 rounded p-0.5">
               {[
                 { key: 'list' as const, icon: Bug, label: 'List' },
                 { key: 'analytics' as const, icon: BarChart3, label: 'Analytics' },
@@ -569,8 +569,8 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                   onClick={() => setViewMode(key)}
                   className={`px-2 py-1 text-xs rounded transition-all flex items-center gap-1 ${
                     viewMode === key
-                      ? 'bg-bg-3 text-text-primary shadow-sm'
-                      : 'text-text-tertiary hover:text-text-primary'
+                      ? 'bg-secondary text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                   title={`${label} view`}
                 >
@@ -602,20 +602,20 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
             <div className="flex items-center gap-2 w-full sm:w-auto pt-2 sm:pt-0">
               <button
                 onClick={() => setIsMaximized(!isMaximized)}
-                className="text-text-tertiary hover:text-text-primary p-1 hover:bg-bg-3 rounded transition-colors"
+                className="text-muted-foreground hover:text-foreground p-1 hover:bg-secondary rounded transition-colors"
                 title={isMaximized ? 'Minimize panel' : 'Maximize panel'}
               >
                 {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
               </button>
               <button
                 onClick={onClear}
-                className="text-xs text-text-tertiary hover:text-text-primary px-2 py-1 hover:bg-bg-3 rounded transition-colors"
+                className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 hover:bg-secondary rounded transition-colors"
               >
                 Clear
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-text-tertiary hover:text-text-primary p-1 hover:bg-bg-3 rounded transition-colors"
+                className="text-muted-foreground hover:text-foreground p-1 hover:bg-secondary rounded transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -624,14 +624,14 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
         </div>
 
         {/* Filters */}
-        <div className="p-3 border-b border-border-primary dark:border-border-primary bg-bg-3/30 dark:bg-bg-3/20">
+        <div className="p-3 border-b border-border dark:border-border bg-secondary/30 dark:bg-secondary/20">
           <div className="flex gap-2 mb-3">
             <input
               type="text"
               placeholder="Search messages..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-3 py-1.5 text-sm bg-input border border-border-primary rounded focus:outline-none focus:ring-2 focus:ring-ring text-text-primary"
+              className="flex-1 px-3 py-1.5 text-sm bg-input border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
             />
           </div>
           <div className="flex gap-1 flex-wrap">
@@ -653,7 +653,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                 className={`px-3 py-1 text-xs rounded-full transition-all ${
                   filter === key
                     ? 'bg-blue-500 text-white'
-                    : 'bg-bg-3 text-text-primary hover:bg-bg-3 border border-border-primary'
+                    : 'bg-secondary text-foreground hover:bg-secondary border border-border'
                 }`}
               >
                 {label} ({count})
@@ -663,8 +663,8 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
           
           {/* WebSocket Category Filters - Show only when WebSocket filter is active */}
           {filter === 'websocket' && (
-            <div className="mt-3 pt-3 border-t border-border-primary">
-              <div className="text-xs text-text-tertiary mb-2 font-medium">WebSocket Message Types:</div>
+            <div className="mt-3 pt-3 border-t border-border">
+              <div className="text-xs text-muted-foreground mb-2 font-medium">WebSocket Message Types:</div>
               <div className="flex gap-1 flex-wrap">
                 {[
                   { key: 'all' as const, label: 'All WS', count: messages.filter(m => m.type === 'websocket').length },
@@ -719,8 +719,8 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                   
                   {/* Statistical Analysis */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-bg-3/50 p-4 rounded-lg">
-                      <h4 className="font-medium text-text-primary mb-2">Response Time Statistics</h4>
+                    <div className="bg-secondary/50 p-4 rounded-lg">
+                      <h4 className="font-medium text-foreground mb-2">Response Time Statistics</h4>
                       <div className="space-y-1 text-sm">
                         <div>Average: <span className="font-mono">{analyticsData.intervals.avg}</span></div>
                         <div>Median: <span className="font-mono">{analyticsData.intervals.median}</span></div>
@@ -746,7 +746,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                   
                   {/* Enhanced Operation-Specific Metrics */}
                   <div className="space-y-6">
-                    <h4 className="font-medium text-text-primary text-lg">🚀 Operation Performance Metrics</h4>
+                    <h4 className="font-medium text-foreground text-lg">🚀 Operation Performance Metrics</h4>
                     
                     {/* File Generation - Special Enhanced Display */}
                     {analyticsData.operations.fileGeneration.duration.count > 0 && (
@@ -757,25 +757,25 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                         </div>
                         
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4 text-center">
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4 text-center">
                             <div className="text-2xl font-bold text-purple-600">
                               {analyticsData.operations.fileGeneration.linesPerSecond.avg.toFixed(1)}
                             </div>
                             <div className="text-sm text-purple-800">Lines/sec (avg)</div>
                           </div>
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4 text-center">
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4 text-center">
                             <div className="text-2xl font-bold text-indigo-600">
                               {(analyticsData.operations.fileGeneration.charsPerSecond.avg / 1000).toFixed(1)}k
                             </div>
                             <div className="text-sm text-indigo-800">Chars/sec (avg)</div>
                           </div>
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4 text-center">
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4 text-center">
                             <div className="text-2xl font-bold text-blue-600">
                               {analyticsData.operations.fileGeneration.totalLines.toLocaleString()}
                             </div>
                             <div className="text-sm text-blue-800">Total Lines</div>
                           </div>
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4 text-center">
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4 text-center">
                             <div className="text-2xl font-bold text-teal-600">
                               {analyticsData.operations.fileGeneration.duration.count}
                             </div>
@@ -784,24 +784,24 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4">
-                            <h6 className="font-medium text-text-primary mb-2">⚡ Generation Speed</h6>
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4">
+                            <h6 className="font-medium text-foreground mb-2">⚡ Generation Speed</h6>
                             <div className="space-y-1 text-sm">
                               <div>Avg: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.linesPerSecond.avg.toFixed(1)} lines/s</span></div>
                               <div>Median: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.linesPerSecond.median.toFixed(1)} lines/s</span></div>
                               <div>Peak (P99): <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.linesPerSecond.p99.toFixed(1)} lines/s</span></div>
                             </div>
                           </div>
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4">
-                            <h6 className="font-medium text-text-primary mb-2">⏱️ Duration Stats</h6>
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4">
+                            <h6 className="font-medium text-foreground mb-2">⏱️ Duration Stats</h6>
                             <div className="space-y-1 text-sm">
                               <div>Avg: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.duration.avg > 1000 ? `${(analyticsData.operations.fileGeneration.duration.avg/1000).toFixed(1)}s` : `${analyticsData.operations.fileGeneration.duration.avg.toFixed(0)}ms`}</span></div>
                               <div>Median: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.duration.median > 1000 ? `${(analyticsData.operations.fileGeneration.duration.median/1000).toFixed(1)}s` : `${analyticsData.operations.fileGeneration.duration.median.toFixed(0)}ms`}</span></div>
                               <div>P99: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.duration.p99 > 1000 ? `${(analyticsData.operations.fileGeneration.duration.p99/1000).toFixed(1)}s` : `${analyticsData.operations.fileGeneration.duration.p99.toFixed(0)}ms`}</span></div>
                             </div>
                           </div>
-                          <div className="bg-bg-4/70 dark:bg-bg-4/50 rounded-lg p-4">
-                            <h6 className="font-medium text-text-primary mb-2">📊 Content Volume</h6>
+                          <div className="bg-muted/70 dark:bg-muted/50 rounded-lg p-4">
+                            <h6 className="font-medium text-foreground mb-2">📊 Content Volume</h6>
                             <div className="space-y-1 text-sm">
                               <div>Total Characters: <span className="font-mono font-medium">{analyticsData.operations.fileGeneration.totalChars.toLocaleString()}</span></div>
                               <div>Avg File Size: <span className="font-mono font-medium">{Math.round(analyticsData.operations.fileGeneration.totalChars / analyticsData.operations.fileGeneration.duration.count).toLocaleString()} chars</span></div>
@@ -828,7 +828,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                             <div key={operation} className={`bg-${operationConfig.color}-50 border border-${operationConfig.color}-200 rounded-lg p-4`}>
                               <div className="flex items-center gap-2 mb-3">
                                 <span className="text-lg">{operationConfig.icon}</span>
-                                <h5 className="font-medium text-text-primary">{operationConfig.label}</h5>
+                                <h5 className="font-medium text-foreground">{operationConfig.label}</h5>
                               </div>
                               {simpleStats.count > 0 ? (
                                 <div className="space-y-3">
@@ -840,20 +840,20 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                                   </div>
                                   <div className="grid grid-cols-2 gap-2 text-xs">
                                     <div>
-                                      <div className="text-text-tertiary">Median</div>
+                                      <div className="text-muted-foreground">Median</div>
                                       <div className="font-mono font-medium">{simpleStats.median > 1000 ? `${(simpleStats.median/1000).toFixed(1)}s` : `${simpleStats.median.toFixed(0)}ms`}</div>
                                     </div>
                                     <div>
-                                      <div className="text-text-tertiary">P99</div>
+                                      <div className="text-muted-foreground">P99</div>
                                       <div className="font-mono font-medium">{simpleStats.p99 > 1000 ? `${(simpleStats.p99/1000).toFixed(1)}s` : `${simpleStats.p99.toFixed(0)}ms`}</div>
                                     </div>
                                   </div>
-                                  <div className="pt-2 border-t border-border-primary text-center">
-                                    <div className="text-text-tertiary text-sm">{simpleStats.count} operations</div>
+                                  <div className="pt-2 border-t border-border text-center">
+                                    <div className="text-muted-foreground text-sm">{simpleStats.count} operations</div>
                                   </div>
                                 </div>
                               ) : (
-                                <div className="text-text-tertiary text-sm text-center py-4">No operations recorded</div>
+                                <div className="text-muted-foreground text-sm text-center py-4">No operations recorded</div>
                               )}
                             </div>
                           );
@@ -862,7 +862,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                   </div>
                 </>
               ) : (
-                <div className="text-center py-12 text-text-tertiary">
+                <div className="text-center py-12 text-muted-foreground">
                   <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-30" />
                   <p className="text-sm">Analytics loading...</p>
                 </div>
@@ -895,11 +895,11 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                 <div className="space-y-6">
                   {/* Timeline Header */}
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-text-primary flex items-center gap-2">
+                    <h4 className="font-medium text-foreground flex items-center gap-2">
                       <Activity className="w-4 h-4" />
                       Message Timeline ({timelineData.events.length} events)
                     </h4>
-                    <div className="text-sm text-text-tertiary">
+                    <div className="text-sm text-muted-foreground">
                       Duration: {((timelineData.events[timelineData.events.length - 1]?.timestamp || 0) - (timelineData.events[0]?.timestamp || 0)) > 1000 ? 
                         `${(((timelineData.events[timelineData.events.length - 1]?.timestamp || 0) - (timelineData.events[0]?.timestamp || 0)) / 1000).toFixed(1)}s` : 
                         `${((timelineData.events[timelineData.events.length - 1]?.timestamp || 0) - (timelineData.events[0]?.timestamp || 0)).toFixed(0)}ms`}
@@ -948,7 +948,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                                     {lane.label}
                                   </span>
                                   {event.messageType && (
-                                    <span className="px-2 py-1 text-xs bg-bg-3 text-text-tertiary rounded font-mono">
+                                    <span className="px-2 py-1 text-xs bg-secondary text-muted-foreground rounded font-mono">
                                       {event.messageType}
                                     </span>
                                   )}
@@ -956,18 +956,18 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                                     <Bookmark className="w-3 h-3 text-amber-500 fill-current" />
                                   )}
                                 </div>
-                                <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                   <span>+{relativeTime > 1000 ? `${(relativeTime/1000).toFixed(1)}s` : `${relativeTime.toFixed(0)}ms`}</span>
                                   <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
                                 </div>
                               </div>
                               
-                              <div className="mt-2 text-sm text-text-primary truncate" title={event.message}>
+                              <div className="mt-2 text-sm text-foreground truncate" title={event.message}>
                                 {event.message}
                               </div>
                               
                               {event.duration > 0 && (
-                                <div className="mt-1 text-xs text-text-tertiary">
+                                <div className="mt-1 text-xs text-muted-foreground">
                                   Duration: {event.duration > 1000 ? `${(event.duration/1000).toFixed(1)}s` : `${event.duration.toFixed(0)}ms`}
                                 </div>
                               )}
@@ -979,10 +979,10 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-12 text-text-tertiary">
+                <div className="text-center py-12 text-muted-foreground">
                   <Activity className="w-12 h-12 mx-auto mb-4 opacity-30" />
                   <p className="text-sm">No timeline events to display</p>
-                  <p className="text-xs text-text-tertiary/70 mt-2">Messages will appear here as they are logged</p>
+                  <p className="text-xs text-muted-foreground/70 mt-2">Messages will appear here as they are logged</p>
                 </div>
               )}
             </div>
@@ -990,7 +990,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
             /* List View */
             <div className="p-4 space-y-3">
               {filteredMessages.length === 0 ? (
-                <div className="text-center py-12 text-text-tertiary">
+                <div className="text-center py-12 text-muted-foreground">
                   <Bug className="w-12 h-12 mx-auto mb-4 opacity-30" />
                   <p className="text-sm">No messages match your filters</p>
                 </div>
@@ -1019,7 +1019,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                       className={`absolute top-2 right-2 p-1 rounded transition-all ${
                         bookmarkedMessages.has(message.id)
                           ? 'text-amber-500 hover:text-amber-600'
-                          : 'text-text-tertiary hover:text-amber-500'
+                          : 'text-muted-foreground hover:text-amber-500'
                       }`}
                       title={bookmarkedMessages.has(message.id) ? 'Remove bookmark' : 'Add bookmark'}
                     >
@@ -1040,12 +1040,12 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                           </span>
                         )}
                       </div>
-                      <span className="text-xs text-text-tertiary">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(message.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
 
-                    <div className="text-sm text-text-primary mb-2">
+                    <div className="text-sm text-foreground mb-2">
                       {message.message}
                     </div>
 
@@ -1058,7 +1058,7 @@ function DebugPanelCore({ messages, onClear, chatSessionId }: DebugPanelProps) {
                           {isExpanded ? 'Hide details' : 'Show details'}
                         </button>
                         {isExpanded && (
-                          <pre className="mt-2 text-xs bg-bg-3 dark:bg-zinc-900 p-2 rounded overflow-x-auto text-text-tertiary whitespace-pre-wrap max-h-40">
+                          <pre className="mt-2 text-xs bg-secondary dark:bg-zinc-900 p-2 rounded overflow-x-auto text-muted-foreground whitespace-pre-wrap max-h-40">
                             {message.details}
                           </pre>
                         )}

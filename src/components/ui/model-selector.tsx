@@ -149,13 +149,13 @@ export function ModelSelector({
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" style={{ width: 'var(--radix-popover-trigger-width)' }}>
           {/* Search Input */}
-          <div className="flex items-center border-b border-border-primary px-3 py-2">
-            <Search className="mr-2 h-4 w-4 shrink-0 text-text-tertiary" />
+          <div className="flex items-center border-b border-border px-3 py-2">
+            <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
             <Input
               placeholder="Search models..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-8 border-0 bg-transparent p-0 placeholder:text-text-tertiary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-8 border-0 bg-transparent p-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           
@@ -170,7 +170,7 @@ export function ModelSelector({
           >
             {/* No results */}
             {filteredGroupedModels.length === 0 && !includeDefaultOption && (
-              <div className="py-6 text-center text-sm text-text-tertiary">
+              <div className="py-6 text-center text-sm text-muted-foreground">
                 No models found.
               </div>
             )}
@@ -185,14 +185,14 @@ export function ModelSelector({
                   setSearch('');
                 }}
                 className={cn(
-                  "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-text-secondary focus:bg-accent focus:text-text-secondary",
-                  value === 'default' && "bg-accent text-text-secondary"
+                  "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-muted-foreground focus:bg-accent focus:text-muted-foreground",
+                  value === 'default' && "bg-accent text-muted-foreground"
                 )}
               >
                 <div className="flex items-center gap-2">
                   <Check
                     className={cn(
-                      "h-4 w-4 text-text-primary",
+                      "h-4 w-4 text-foreground",
                       value === 'default' ? "opacity-100" : "opacity-0"
                     )}
                   />
@@ -205,7 +205,7 @@ export function ModelSelector({
             {filteredGroupedModels.map((group) => (
               <div key={group.provider} className="mb-2 last:mb-0">
                 {/* Provider header */}
-                <div className="px-2 py-1.5 text-xs font-semibold text-text-tertiary uppercase tracking-wider bg-bg-3/30 sticky top-0 z-10">
+                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-secondary/30 sticky top-0 z-10">
                   {group.provider === 'platform' ? 'Platform Models' : `${group.provider.charAt(0).toUpperCase() + group.provider.slice(1)}`}
                 </div>
 
@@ -219,14 +219,14 @@ export function ModelSelector({
                       setSearch('');
                     }}
                     className={cn(
-                      "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-text-secondary focus:bg-accent focus:text-text-secondary",
-                      value === model.value && "bg-accent text-text-secondary"
+                      "relative flex cursor-pointer select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-muted-foreground focus:bg-accent focus:text-muted-foreground",
+                      value === model.value && "bg-accent text-muted-foreground"
                     )}
                   >
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <Check
                         className={cn(
-                          "h-4 w-4 text-text-primary shrink-0",
+                          "h-4 w-4 text-foreground shrink-0",
                           value === model.value ? "opacity-100" : "opacity-0"
                         )}
                       />
@@ -245,7 +245,7 @@ export function ModelSelector({
       
       {/* System default display */}
       {systemDefault && (
-        <p className="text-xs text-text-tertiary">
+        <p className="text-xs text-muted-foreground">
           🔧 System default: {getModelDisplayName(systemDefault)}
         </p>
       )}

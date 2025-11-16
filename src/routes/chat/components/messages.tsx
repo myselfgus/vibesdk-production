@@ -29,7 +29,7 @@ export function UserMessage({ message }: { message: string }) {
 			</div>
 			<div className="flex flex-col gap-2 min-w-0">
 				<div className="font-medium text-text-50">You</div>
-				<Markdown className="text-text-primary/80">{sanitizedMessage}</Markdown>
+				<Markdown className="text-foreground/80">{sanitizedMessage}</Markdown>
 			</div>
 		</div>
 	);
@@ -41,7 +41,7 @@ type ContentItem =
 
 function JsonRenderer({ data }: { data: unknown }) {
 	if (typeof data !== 'object' || data === null) {
-		return <span className="text-text-primary whitespace-pre-wrap">{String(data)}</span>;
+		return <span className="text-foreground whitespace-pre-wrap">{String(data)}</span>;
 	}
 
 	return (
@@ -54,7 +54,7 @@ function JsonRenderer({ data }: { data: unknown }) {
 							<JsonRenderer data={value} />
 						</div>
 					) : (
-						<span className="text-text-primary flex-1 whitespace-pre-wrap break-words">
+						<span className="text-foreground flex-1 whitespace-pre-wrap break-words">
 							{String(value)}
 						</span>
 					)}
@@ -203,8 +203,8 @@ export function ToolStatusIndicator({ event }: { event: ToolEvent }) {
 				onClick={() => hasResult && setIsExpanded(!isExpanded)}
 				className={clsx(
 					'flex items-center gap-1.5 text-xs',
-					isDeepDebug ? 'text-accent font-medium' : 'text-text-tertiary',
-					hasResult && 'cursor-pointer hover:text-text-secondary transition-colors'
+					isDeepDebug ? 'text-accent font-medium' : 'text-muted-foreground',
+					hasResult && 'cursor-pointer hover:text-muted-foreground transition-colors'
 				)}
 				disabled={!hasResult}
 			>
