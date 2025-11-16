@@ -638,7 +638,7 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
         const toolsOpts = tools ? { tools, tool_choice: 'auto' as const } : {};
 
         // Prepare completion options based on model provider
-        const isClaudeModel = modelName.includes('claude') || modelName.includes('anthropic');
+        const isClaudeModel = modelName.includes('claude');
         const completionOptions: Record<string, any> = {
             ...schemaObj,
             ...toolsOpts,
