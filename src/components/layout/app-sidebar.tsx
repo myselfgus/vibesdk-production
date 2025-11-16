@@ -105,7 +105,7 @@ function AppMenuItem({
 					<div className="flex-1 min-w-0 pr-2">
 						<div className="flex items-center gap-2 min-w-0">
 							{variant === 'bookmarked' && (
-								<Bookmark className="h-3 w-3 fill-yellow-500 text-yellow-500 flex-shrink-0" />
+								<Bookmark className="h-3 w-3 fill-gray-400 text-gray-400 flex-shrink-0" />
 							)}
 
 							<div className="relative flex-1 min-w-0 overflow-hidden">
@@ -222,10 +222,10 @@ export function AppSidebar() {
 											<TooltipTrigger asChild>
 												<button
 													className={cn(
-														'group flex w-full border-[0.5px] border-bg-2 items-center gap-2 font-medium hover:opacity-80 hover:cursor-pointer p-2 rounded-md cursor-hand text-text-secondary hover:text-text-primary',
+														'group flex w-full border-[0.5px] border-bg-2 items-center gap-2 font-medium hover:opacity-80 hover:cursor-pointer p-2 rounded-md cursor-hand text-white hover:text-white',
 														isCollapsed
-															? 'justify-center bg-accent'
-															: 'justify-start bg-accent',
+															? 'justify-center bg-black'
+															: 'justify-start bg-black',
 													)}
 													onClick={() => {
 														// Collapse sidebar when starting a new build
@@ -235,9 +235,9 @@ export function AppSidebar() {
 														navigate('/');
 													}}
 												>
-													<Plus className="h-4 w-4 text-neutral-50" />
+													<Plus className="h-4 w-4 text-white" />
 													{!isCollapsed && (
-														<span className="font-medium text-neutral-50">
+														<span className="font-medium text-white">
 															New build
 														</span>
 													)}
@@ -408,7 +408,7 @@ export function AppSidebar() {
 											)}
 										>
 											{!isCollapsed && 'Bookmarked'}
-											<Bookmark className="h-5 w-5 fill-yellow-500 text-yellow-500" />
+											<Bookmark className="h-5 w-5 fill-gray-400 text-gray-400" />
 											
 										</SidebarGroupLabel>
 										<SidebarGroupContent>
